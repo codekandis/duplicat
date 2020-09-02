@@ -75,5 +75,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\libraries\SharpKandis\SharpKandis\SharpKandis.csproj">
+      <Project>{f0796aae-dbdb-4b0d-96e6-018e6e2953be}</Project>
+      <Name>SharpKandis</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
