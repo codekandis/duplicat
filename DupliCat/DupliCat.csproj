@@ -50,6 +50,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Converters\ListItemConverter.cs" />
+    <Compile Include="Models\File.cs" />
+    <Compile Include="Models\IFileList.cs" />
+    <Compile Include="Models\IFile.cs" />
+    <Compile Include="Models\Md5.cs" />
+    <Compile Include="Models\IMd5.cs" />
+    <Compile Include="Models\FileList.cs" />
+    <Compile Include="Models\IMd5List.cs" />
+    <Compile Include="Models\Md5List.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
