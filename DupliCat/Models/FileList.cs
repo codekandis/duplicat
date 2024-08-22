@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using DupliCat.Models.Converters;
+using CodeKandis.DupliCat.Models.Converters;
 using Newtonsoft.Json;
 
-namespace DupliCat.Models
+namespace CodeKandis.DupliCat.Models
 {
 	[JsonArray( ItemConverterType = typeof( ListItemConverter<File> ) )]
 	internal interface IFileList:

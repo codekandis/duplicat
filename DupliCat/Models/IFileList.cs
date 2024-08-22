@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DupliCat.Models
+namespace CodeKandis.DupliCat.Models
 {
 	internal class FileList:
 		List<IFile>,

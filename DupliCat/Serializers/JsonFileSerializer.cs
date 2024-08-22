@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
 
-namespace DupliCat.Serializers
+namespace CodeKandis.DupliCat.Serializers
 {
 	internal class JsonFileSerializer<TData>:
 		IJsonFileSerializer<TData>

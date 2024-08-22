@@ -1,4 +1,4 @@
-﻿namespace DupliCat.Models
+﻿namespace CodeKandis.DupliCat.Models
 {
 	internal interface IFile
 	{

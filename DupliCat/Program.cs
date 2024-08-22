@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace DupliCat
+namespace CodeKandis.DupliCat
 {
 	internal static class Program
 	{

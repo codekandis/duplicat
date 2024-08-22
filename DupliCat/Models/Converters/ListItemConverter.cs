@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using Newtonsoft.Json.Converters;
 
-namespace DupliCat.Models.Converters
+namespace CodeKandis.DupliCat.Models.Converters
 {
 	internal class ListItemConverter<TListItem>:
 		CustomCreationConverter<TListItem>

@@ -1,4 +1,4 @@
-﻿namespace DupliCat.Serializers
+﻿namespace CodeKandis.DupliCat.Serializers
 {
 	internal interface IJsonFileSerializer<TData>
 	{

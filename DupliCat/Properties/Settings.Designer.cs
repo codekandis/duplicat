@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DupliCat.Properties
+namespace CodeKandis.DupliCat.Properties
 {
 
 

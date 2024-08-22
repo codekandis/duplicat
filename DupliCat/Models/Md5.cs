@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using DupliCat.Models.Converters;
+using CodeKandis.DupliCat.Models.Converters;
 using Newtonsoft.Json;
 using SharpKandis.ComponentModel;
 
-namespace DupliCat.Models
+namespace CodeKandis.DupliCat.Models
 {
 	[JsonObject( MemberSerialization.OptIn )]
 	internal class Md5:
