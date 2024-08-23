@@ -56,8 +56,8 @@
     <Compile Include="Models\Md5List.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serializers\JsonFileSerializer.cs" />
-    <Compile Include="Serializers\IJsonFileSerializer.cs" />
+    <Compile Include="Serialization\JsonSerializedFileReader.cs" />
+    <Compile Include="Serialization\JsonSerializedReaderInterface.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -81,7 +81,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\libraries\SharpKandis\SharpKandis\SharpKandis.csproj">
       <Project>{f0796aae-dbdb-4b0d-96e6-018e6e2953be}</Project>
