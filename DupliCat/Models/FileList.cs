@@ -5,8 +5,9 @@ using Newtonsoft.Json;
 namespace CodeKandis.DupliCat.Models
 {
 	[JsonArray( ItemConverterType = typeof( ListItemConverter<File> ) )]
-	internal interface IFileList:
-		IList<IFile>
+	internal class FileList:
+		List<FileInterface>,
+		FileListInterface
 	{
 	}
 }

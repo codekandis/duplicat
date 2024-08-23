@@ -6,7 +6,8 @@ namespace CodeKandis.DupliCat.Models
 {
 	[JsonArray( ItemConverterType = typeof( ListItemConverter<Md5> ) )]
 	internal class Md5List:
-		List<IMd5>
+		List<Md5Interface>,
+		Md5ListInterface
 	{
 	}
 }

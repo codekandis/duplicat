@@ -6,7 +6,7 @@ namespace CodeKandis.DupliCat.Models
 	[JsonObject( MemberSerialization.OptIn )]
 	internal class File:
 		NotifyPropertyAbstract,
-		IFile
+		FileInterface
 	{
 		[JsonProperty( PropertyName = "path" )]
 		private string path;
