@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using CodeKandis.DupliCat.Forms;
 
 namespace CodeKandis.DupliCat
 {
@@ -13,7 +14,9 @@ namespace CodeKandis.DupliCat
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault( false );
-			Application.Run();
+			Application.Run(
+				new Main()
+			);
 		}
 	}
 }
