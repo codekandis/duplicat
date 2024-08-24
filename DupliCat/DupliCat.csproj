@@ -51,7 +51,6 @@
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Converters\ListItemConverter.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FileList.cs" />
     <Compile Include="Models\FileInterface.cs" />
@@ -62,6 +61,7 @@
     <Compile Include="Models\Md5List.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\Converters\JsonListItemConverter.cs" />
     <Compile Include="Serialization\JsonSerializedFileReader.cs" />
     <Compile Include="Serialization\JsonSerializedReaderInterface.cs" />
     <EmbeddedResource Include="Forms\Main.resx">
