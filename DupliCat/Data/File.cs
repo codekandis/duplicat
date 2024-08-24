@@ -1,16 +1,23 @@
 ﻿using Newtonsoft.Json;
 using SharpKandis.ComponentModel;
 
-namespace CodeKandis.DupliCat.Models
+namespace CodeKandis.DupliCat.Data
 {
+	/// <summary>
+	/// Represents a file.
+	/// </summary>
 	[JsonObject( MemberSerialization.OptIn )]
 	internal class File:
 		NotifyPropertyAbstract,
 		FileInterface
 	{
+		/// <summary>
+		/// Stores the path of the file.
+		/// </summary>
 		[JsonProperty( PropertyName = "path" )]
 		private string path;
 
+		/// <inheritdoc/>
 		public virtual string Path
 		{
 			get
@@ -25,9 +32,13 @@ namespace CodeKandis.DupliCat.Models
 			}
 		}
 
+		/// <summary>
+		/// Stores if the file must be deleted.
+		/// </summary>
 		[JsonProperty( PropertyName = "flagDeletion" )]
-		private bool flagDeletion = false;
+		private bool flagDeletion;
 
+		/// <inheritdoc/>
 		public virtual bool FlagDeletion
 		{
 			get
@@ -42,9 +53,13 @@ namespace CodeKandis.DupliCat.Models
 			}
 		}
 
+		/// <summary>
+		/// Constructor method.
+		/// </summary>
+		/// <param name="path">The path of the file.</param>
 		public File( string path )
 		{
-			this.Path = path;
+			this.path = path;
 		}
 	}
 }

@@ -51,14 +51,14 @@
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\File.cs" />
-    <Compile Include="Models\FileList.cs" />
-    <Compile Include="Models\FileInterface.cs" />
-    <Compile Include="Models\Md5.cs" />
-    <Compile Include="Models\Md5Interface.cs" />
-    <Compile Include="Models\FileListInterface.cs" />
-    <Compile Include="Models\Md5ListInterface.cs" />
-    <Compile Include="Models\Md5List.cs" />
+    <Compile Include="Data\File.cs" />
+    <Compile Include="Data\FileList.cs" />
+    <Compile Include="Data\FileInterface.cs" />
+    <Compile Include="Data\Md5Set.cs" />
+    <Compile Include="Data\Md5SetInterface.cs" />
+    <Compile Include="Data\FileListInterface.cs" />
+    <Compile Include="Data\Md5SetListInterface.cs" />
+    <Compile Include="Data\Md5SetList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Converters\JsonFileListConverter.cs" />
