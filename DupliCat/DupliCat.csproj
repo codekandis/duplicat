@@ -61,8 +61,12 @@
     <Compile Include="Models\Md5List.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\Converters\JsonFileListConverter.cs" />
+    <Compile Include="Serialization\Converters\JsonFileListItemConverter.cs" />
     <Compile Include="Serialization\Converters\JsonListItemConverter.cs" />
+    <Compile Include="Serialization\Converters\JsonMd5SetListItemConverter.cs" />
     <Compile Include="Serialization\JsonSerializedFileReader.cs" />
+    <Compile Include="Serialization\JsonSerializedMd5SetListFileReader.cs" />
     <Compile Include="Serialization\JsonSerializedReaderInterface.cs" />
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
