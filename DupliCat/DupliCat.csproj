@@ -59,6 +59,8 @@
     <Compile Include="Data\FileListInterface.cs" />
     <Compile Include="Data\Md5SetListInterface.cs" />
     <Compile Include="Data\Md5SetList.cs" />
+    <Compile Include="Io\DirectoryScanner.cs" />
+    <Compile Include="Io\DirectoryScannerInterface.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Converters\JsonFileListConverter.cs" />
