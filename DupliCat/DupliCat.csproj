@@ -74,6 +74,7 @@
     <Compile Include="Serialization\Json\JsonFileSerializer.cs" />
     <Compile Include="Serialization\Json\JsonSerializerInterface.cs" />
     <Compile Include="Serialization\Json\Md5SetListJsonFileDeserializer.cs" />
+    <Compile Include="Serialization\Json\Md5SetListJsonFileSerializer.cs" />
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
