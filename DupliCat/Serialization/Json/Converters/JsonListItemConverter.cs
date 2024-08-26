@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using Newtonsoft.Json.Converters;
 
-namespace CodeKandis.DupliCat.Serialization.Converters
+namespace CodeKandis.DupliCat.Serialization.Json.Converters
 {
 	/// <summary>
 	/// Represents a JSON list item converter.

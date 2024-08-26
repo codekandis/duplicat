@@ -1,4 +1,4 @@
-using CodeKandis.DupliCat.Serialization.Converters;
+using CodeKandis.DupliCat.Serialization.Json.Converters;
 using Newtonsoft.Json;
 using SharpKandis.ComponentModel;
 
