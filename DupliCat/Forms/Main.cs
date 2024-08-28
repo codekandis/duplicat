@@ -45,9 +45,13 @@ namespace CodeKandis.DupliCat.Forms
 
 		private void Log( string message )
 		{
-			this.tbxLog.AppendText( message );
-			this.tbxLog.AppendText( Environment.NewLine );
-			this.Refresh();
+			this.Invoke(
+				() =>
+				{
+					this.tbxLog.AppendText( message );
+					this.tbxLog.AppendText( Environment.NewLine );
+				}
+			);
 		}
 
 		private void LoadListing()
@@ -78,73 +82,93 @@ namespace CodeKandis.DupliCat.Forms
 			Thread thread = new Thread(
 				() =>
 				{
-					this.tbxLog.Clear();
-					this.prbrScanning.Value = 0;
-					this.prbrScanning.Show();
-					this.Refresh();
+					this.Invoke(
+						() =>
+						{
+							this.tbxLog.Clear();
+							this.prbrScanning.Value = 0;
+							this.prbrScanning.Show();
+						}
+					);
 
 					Dictionary<string, FileListInterface> mappedFiles = new Dictionary<string, FileListInterface>();
 
-					FileListInterface scannedFileList = new DirectoryScanner( this.tbxPath.Text )
+					FileListInterface scannedFileList = new DirectoryScanner(
+							this.tbxPath.Text,
+							this.tbxPatterns.Text.Split( ' ' )
+						)
 						.Scan();
 
-					this.prbrScanning.Maximum = scannedFileList.Count;
+					this.Invoke(
+						() =>
+						{
+							this.prbrScanning.Maximum = scannedFileList.Count;
+						}
+					);
 					this.Log(
 						$"Files: {scannedFileList.Count}"
 					);
 
-					scannedFileList.ForEach( file =>
+					foreach ( FileInterface file in scannedFileList )
+					{
+						try
 						{
-							try
+							this.Log( file.Path );
+
+							string determinedMd5Checksum = new Md5FileChecksumDeterminator( file )
+								.Determine();
+							bool md5ChecksumExists = mappedFiles.ContainsKey( determinedMd5Checksum );
+
+							FileListInterface mappedFileList;
+							if ( false == md5ChecksumExists )
 							{
-								this.Log( file.Path );
-
-								string determinedMd5Checksum = new Md5FileChecksumDeterminator( file )
-									.Determine();
-								bool md5ChecksumExists = mappedFiles.ContainsKey( determinedMd5Checksum );
-
-								FileListInterface mappedFileList;
-								if ( false == md5ChecksumExists )
-								{
-									mappedFileList = new FileList();
-									mappedFiles[ determinedMd5Checksum ] = mappedFileList;
-								}
-								else
-								{
-									mappedFileList = mappedFiles[ determinedMd5Checksum ];
-								}
-								this.Log( "... succeeded" );
-
-								mappedFileList.Add( file );
+								mappedFileList = new FileList();
+								mappedFiles[ determinedMd5Checksum ] = mappedFileList;
 							}
-							catch ( Exception )
+							else
 							{
-								this.Log( "... failed" );
+								mappedFileList = mappedFiles[ determinedMd5Checksum ];
 							}
+							this.Log( "... succeeded" );
 
-							this.prbrScanning.Value++;
-							this.Refresh();
+							mappedFileList.Add( file );
 						}
-					);
+						catch ( Exception )
+						{
+							this.Log( "... failed" );
+						}
+
+						this.Invoke(
+							() =>
+							{
+								this.prbrScanning.Value++;
+							}
+						);
+					}
 
 					this.md5SetList = new Md5SetList();
-					mappedFiles.ForEach( keyValuePair =>
-						{
-							this.md5SetList.Add(
-								new Md5Set(
-									keyValuePair.Key,
-									keyValuePair.Value
-								)
-							);
-						}
-					);
+					foreach ( KeyValuePair<string, FileListInterface> keyValuePair in mappedFiles )
+					{
+						this.md5SetList.Add(
+							new Md5Set(
+								keyValuePair.Key,
+								keyValuePair.Value
+							)
+						);
+					}
 
 					this.md5Sets.Clear();
 					this.md5Sets.RefreshWith( this.md5SetList );
 
-					this.prbrScanning.Hide();
 
-					this.lblTotal.Text = this.md5Sets.Count.ToString();
+					this.Invoke(
+						() =>
+						{
+							this.prbrScanning.Hide();
+
+							this.lblTotal.Text = this.md5Sets.Count.ToString();
+						}
+					);
 				}
 			);
 			thread.Start();
@@ -166,46 +190,42 @@ namespace CodeKandis.DupliCat.Forms
 
 		private void Mark()
 		{
-			this.md5SetList.ForEach(
-				( Md5SetInterface md5Set ) =>
+			foreach ( Md5SetInterface md5Set in this.md5SetList )
+			{
+				for ( int n = 1; n < md5Set.Files.Count; n++ )
 				{
-					for ( int n = 1; n < md5Set.Files.Count; n++ )
-					{
-						md5Set.Files[ n ].FlagDeletion = true;
-					}
+					md5Set.Files[ n ].FlagDeletion = true;
 				}
-			);
+			}
 
 			this.md5Sets.DataSource.ResetBindings();
 		}
 
 		private void Delete()
 		{
-			this.md5SetList.ForEach(
-				( Md5SetInterface md5Set ) =>
-				{
-					md5Set
-						.Files
-						.Where(
-							( FileInterface file ) =>
+			foreach ( Md5SetInterface md5Set in this.md5SetList )
+			{
+				md5Set
+					.Files
+					.Where(
+						file =>
+						{
+							return file.FlagDeletion;
+						}
+					)
+					.Reverse()
+					.ForEach(
+						file =>
+						{
+							if ( File.Exists( file.Path ) )
 							{
-								return true == file.FlagDeletion;
+								File.Delete( file.Path );
 							}
-						)
-						.Reverse()
-						.ForEach(
-							( FileInterface file ) =>
-							{
-								if ( true == File.Exists( file.Path ) )
-								{
-									File.Delete( file.Path );
-								}
 
-								md5Set.Files.Remove( file );
-							}
-						);
-				}
-			);
+							md5Set.Files.Remove( file );
+						}
+					);
+			}
 
 			this.md5Sets.DataSource.ResetBindings();
 		}

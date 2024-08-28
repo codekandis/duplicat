@@ -43,6 +43,7 @@
 			this.btnMark = new System.Windows.Forms.Button();
 			this.btnDelete = new System.Windows.Forms.Button();
 			this.btnLoad = new System.Windows.Forms.Button();
+			this.tbxPatterns = new SharpKandis.Windows.Forms.TextBoxPlaceholder();
 			label1 = new System.Windows.Forms.Label();
 			this.pnlLog.SuspendLayout();
 			this.SuspendLayout();
@@ -103,7 +104,7 @@
 			this.tbxPath.Location = new System.Drawing.Point( 12, 12 );
 			this.tbxPath.Name = "tbxPath";
 			this.tbxPath.PlaceholderText = "Path";
-			this.tbxPath.Size = new System.Drawing.Size( 1445, 20 );
+			this.tbxPath.Size = new System.Drawing.Size( 1144, 20 );
 			this.tbxPath.TabIndex = 8;
 			// 
 			// pnlLog
@@ -149,7 +150,7 @@
 			// 
 			this.prbrScanning.Location = new System.Drawing.Point( 12, 25 );
 			this.prbrScanning.Name = "prbrScanning";
-			this.prbrScanning.Size = new System.Drawing.Size( 1445, 10 );
+			this.prbrScanning.Size = new System.Drawing.Size( 1144, 10 );
 			this.prbrScanning.Step = 1;
 			this.prbrScanning.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.prbrScanning.TabIndex = 10;
@@ -194,11 +195,20 @@
 			this.btnLoad.UseVisualStyleBackColor = true;
 			this.btnLoad.Click += new System.EventHandler( this.btnLoad_Click );
 			// 
+			// tbxPatterns
+			// 
+			this.tbxPatterns.Location = new System.Drawing.Point( 1157, 12 );
+			this.tbxPatterns.Name = "tbxPatterns";
+			this.tbxPatterns.PlaceholderText = "Patterns";
+			this.tbxPatterns.Size = new System.Drawing.Size( 300, 20 );
+			this.tbxPatterns.TabIndex = 19;
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size( 1994, 971 );
+			this.Controls.Add( this.tbxPatterns );
 			this.Controls.Add( this.btnLoad );
 			this.Controls.Add( this.btnDelete );
 			this.Controls.Add( this.btnMark );
@@ -223,6 +233,8 @@
 			this.ResumeLayout( false );
 			this.PerformLayout();
 		}
+
+		private SharpKandis.Windows.Forms.TextBoxPlaceholder tbxPatterns;
 
 		private System.Windows.Forms.Button btnDelete;
 
