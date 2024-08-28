@@ -283,5 +283,13 @@ namespace CodeKandis.DupliCat.Forms
 				: '-';
 			eventArguments.Value = $"{prefix} {file.Path}";
 		}
+
+		private void tbxPath_DoubleClick( object sender, EventArgs e )
+		{
+			if ( DialogResult.OK == this.fbdlgPath.ShowDialog( this.Parent ) )
+			{
+				this.tbxPath.Text = this.fbdlgPath.SelectedPath;
+			}
+		}
 	}
 }

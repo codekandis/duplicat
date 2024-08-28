@@ -44,6 +44,7 @@
 			this.btnDelete = new System.Windows.Forms.Button();
 			this.btnLoad = new System.Windows.Forms.Button();
 			this.tbxPatterns = new SharpKandis.Windows.Forms.TextBoxPlaceholder();
+			this.fbdlgPath = new System.Windows.Forms.FolderBrowserDialog();
 			label1 = new System.Windows.Forms.Label();
 			this.pnlLog.SuspendLayout();
 			this.SuspendLayout();
@@ -106,6 +107,7 @@
 			this.tbxPath.PlaceholderText = "Path";
 			this.tbxPath.Size = new System.Drawing.Size( 1144, 20 );
 			this.tbxPath.TabIndex = 8;
+			this.tbxPath.DoubleClick += new System.EventHandler( this.tbxPath_DoubleClick );
 			// 
 			// pnlLog
 			// 
@@ -203,6 +205,11 @@
 			this.tbxPatterns.Size = new System.Drawing.Size( 300, 20 );
 			this.tbxPatterns.TabIndex = 19;
 			// 
+			// fbdlgPath
+			// 
+			this.fbdlgPath.RootFolder = System.Environment.SpecialFolder.MyComputer;
+			this.fbdlgPath.ShowNewFolderButton = false;
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -233,6 +240,8 @@
 			this.ResumeLayout( false );
 			this.PerformLayout();
 		}
+
+		private System.Windows.Forms.FolderBrowserDialog fbdlgPath;
 
 		private SharpKandis.Windows.Forms.TextBoxPlaceholder tbxPatterns;
 
