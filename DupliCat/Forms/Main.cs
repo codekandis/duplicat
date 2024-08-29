@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -19,9 +20,14 @@ namespace CodeKandis.DupliCat.Forms
 		Form
 	{
 		/// <summary>
-		/// Represents the path of the listing.
+		/// Represents the name of the projects file.
 		/// </summary>
-		private const string ListingPath = @"D:\development\csharp\codekandis\projects\DupliCat\DupliCat\listing.json";
+		private const string ProjectsFileName = "projects.json";
+
+		/// <summary>
+		/// Represents the path of the projects file.
+		/// </summary>
+		private string projectsFilePath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, Main.ProjectsFileName );
 
 		/// <summary>
 		/// Stores the bindable data source of MD5 sets.
@@ -88,7 +94,7 @@ namespace CodeKandis.DupliCat.Forms
 		/// </summary>
 		private void LoadListing()
 		{
-			this.md5SetList = new Md5SetListJsonFileDeserializer( Main.ListingPath )
+			this.md5SetList = new Md5SetListJsonFileDeserializer( this.projectsFilePath )
 				.Deserialize();
 
 			this.md5Sets.RefreshWith(
@@ -103,7 +109,7 @@ namespace CodeKandis.DupliCat.Forms
 		/// </summary>
 		private void SaveListing()
 		{
-			new Md5SetListJsonFileSerializer( Main.ListingPath )
+			new Md5SetListJsonFileSerializer( this.projectsFilePath )
 				.Serialize( this.md5SetList );
 		}
 
