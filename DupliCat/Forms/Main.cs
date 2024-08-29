@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -230,6 +231,12 @@ namespace CodeKandis.DupliCat.Forms
 			this.md5Sets.DataSource.ResetBindings();
 		}
 
+		private void RemoveEmptyDirs()
+		{
+			new RecursivelyEmptyDirectoryRemover( this.tbxPath.Text )
+				.Remove();
+		}
+
 		private void this_Load( object sender, EventArgs eventArguments )
 		{
 			this.Initialize();
@@ -258,6 +265,11 @@ namespace CodeKandis.DupliCat.Forms
 		private void btnDelete_Click( object sender, EventArgs eventArguments )
 		{
 			this.Delete();
+		}
+
+		private void btnEmptyDirs_Click( object sender, EventArgs e )
+		{
+			this.RemoveEmptyDirs();
 		}
 
 		private void btnLoad_Click( object sender, EventArgs eventArguments )
@@ -297,7 +309,7 @@ namespace CodeKandis.DupliCat.Forms
 			int index = this.lbxFiles.IndexFromPoint( eventArguments.Location );
 			if ( index != ListBox.NoMatches )
 			{
-				this.files[index].FlagDeletion = !this.files.Current.FlagDeletion;
+				this.files[ index ].FlagDeletion = !this.files.Current.FlagDeletion;
 			}
 		}
 	}

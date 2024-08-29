@@ -45,6 +45,7 @@
 			this.btnLoad = new System.Windows.Forms.Button();
 			this.tbxPatterns = new SharpKandis.Windows.Forms.TextBoxPlaceholder();
 			this.fbdlgPath = new System.Windows.Forms.FolderBrowserDialog();
+			this.btnEmptyDirs = new System.Windows.Forms.Button();
 			label1 = new System.Windows.Forms.Label();
 			this.pnlLog.SuspendLayout();
 			this.SuspendLayout();
@@ -60,7 +61,7 @@
 			// 
 			// btnScan
 			// 
-			this.btnScan.Location = new System.Drawing.Point( 1457, 11 );
+			this.btnScan.Location = new System.Drawing.Point( 1382, 11 );
 			this.btnScan.Name = "btnScan";
 			this.btnScan.Size = new System.Drawing.Size( 76, 22 );
 			this.btnScan.TabIndex = 2;
@@ -106,7 +107,7 @@
 			this.tbxPath.Location = new System.Drawing.Point( 12, 12 );
 			this.tbxPath.Name = "tbxPath";
 			this.tbxPath.PlaceholderText = "Path";
-			this.tbxPath.Size = new System.Drawing.Size( 1144, 20 );
+			this.tbxPath.Size = new System.Drawing.Size( 1069, 20 );
 			this.tbxPath.TabIndex = 8;
 			this.tbxPath.DoubleClick += new System.EventHandler( this.tbxPath_DoubleClick );
 			// 
@@ -141,7 +142,7 @@
 			// 
 			// btnPurge
 			// 
-			this.btnPurge.Location = new System.Drawing.Point( 1532, 11 );
+			this.btnPurge.Location = new System.Drawing.Point( 1457, 11 );
 			this.btnPurge.Name = "btnPurge";
 			this.btnPurge.Size = new System.Drawing.Size( 76, 22 );
 			this.btnPurge.TabIndex = 13;
@@ -153,7 +154,7 @@
 			// 
 			this.prbrScanning.Location = new System.Drawing.Point( 12, 25 );
 			this.prbrScanning.Name = "prbrScanning";
-			this.prbrScanning.Size = new System.Drawing.Size( 1144, 10 );
+			this.prbrScanning.Size = new System.Drawing.Size( 1069, 10 );
 			this.prbrScanning.Step = 1;
 			this.prbrScanning.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.prbrScanning.TabIndex = 10;
@@ -170,7 +171,7 @@
 			// 
 			// btnMark
 			// 
-			this.btnMark.Location = new System.Drawing.Point( 1607, 11 );
+			this.btnMark.Location = new System.Drawing.Point( 1532, 11 );
 			this.btnMark.Name = "btnMark";
 			this.btnMark.Size = new System.Drawing.Size( 76, 22 );
 			this.btnMark.TabIndex = 16;
@@ -180,7 +181,7 @@
 			// 
 			// btnDelete
 			// 
-			this.btnDelete.Location = new System.Drawing.Point( 1682, 11 );
+			this.btnDelete.Location = new System.Drawing.Point( 1607, 11 );
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size( 76, 22 );
 			this.btnDelete.TabIndex = 17;
@@ -200,7 +201,7 @@
 			// 
 			// tbxPatterns
 			// 
-			this.tbxPatterns.Location = new System.Drawing.Point( 1157, 12 );
+			this.tbxPatterns.Location = new System.Drawing.Point( 1082, 12 );
 			this.tbxPatterns.Name = "tbxPatterns";
 			this.tbxPatterns.PlaceholderText = "Patterns";
 			this.tbxPatterns.Size = new System.Drawing.Size( 300, 20 );
@@ -211,11 +212,22 @@
 			this.fbdlgPath.RootFolder = System.Environment.SpecialFolder.MyComputer;
 			this.fbdlgPath.ShowNewFolderButton = false;
 			// 
+			// btnEmptyDirs
+			// 
+			this.btnEmptyDirs.Location = new System.Drawing.Point( 1682, 11 );
+			this.btnEmptyDirs.Name = "btnEmptyDirs";
+			this.btnEmptyDirs.Size = new System.Drawing.Size( 76, 22 );
+			this.btnEmptyDirs.TabIndex = 20;
+			this.btnEmptyDirs.Text = "Empty Dirs";
+			this.btnEmptyDirs.UseVisualStyleBackColor = true;
+			this.btnEmptyDirs.Click += new System.EventHandler( this.btnEmptyDirs_Click );
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size( 1994, 971 );
+			this.Controls.Add( this.btnEmptyDirs );
 			this.Controls.Add( this.tbxPatterns );
 			this.Controls.Add( this.btnLoad );
 			this.Controls.Add( this.btnDelete );
@@ -241,6 +253,8 @@
 			this.ResumeLayout( false );
 			this.PerformLayout();
 		}
+
+		private System.Windows.Forms.Button btnEmptyDirs;
 
 		private System.Windows.Forms.FolderBrowserDialog fbdlgPath;
 
