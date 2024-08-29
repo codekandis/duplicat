@@ -40,7 +40,7 @@
 			this.btnPurge = new System.Windows.Forms.Button();
 			this.prbrScanning = new System.Windows.Forms.ProgressBar();
 			this.lblTotal = new System.Windows.Forms.Label();
-			this.btnMark = new System.Windows.Forms.Button();
+			this.btnFlag = new System.Windows.Forms.Button();
 			this.btnDelete = new System.Windows.Forms.Button();
 			this.btnLoad = new System.Windows.Forms.Button();
 			this.tbxPatterns = new SharpKandis.Windows.Forms.TextBoxPlaceholder();
@@ -170,15 +170,15 @@
 			this.lblTotal.TabIndex = 15;
 			this.lblTotal.Text = "0";
 			// 
-			// btnMark
+			// btnFlag
 			// 
-			this.btnMark.Location = new System.Drawing.Point( 1532, 11 );
-			this.btnMark.Name = "btnMark";
-			this.btnMark.Size = new System.Drawing.Size( 76, 22 );
-			this.btnMark.TabIndex = 16;
-			this.btnMark.Text = "Mark";
-			this.btnMark.UseVisualStyleBackColor = true;
-			this.btnMark.Click += new System.EventHandler( this.btnMark_Click );
+			this.btnFlag.Location = new System.Drawing.Point( 1532, 11 );
+			this.btnFlag.Name = "btnFlag";
+			this.btnFlag.Size = new System.Drawing.Size( 76, 22 );
+			this.btnFlag.TabIndex = 16;
+			this.btnFlag.Text = "Flag";
+			this.btnFlag.UseVisualStyleBackColor = true;
+			this.btnFlag.Click += new System.EventHandler( this.btnFlag_Click );
 			// 
 			// btnDelete
 			// 
@@ -232,7 +232,7 @@
 			this.Controls.Add( this.tbxPatterns );
 			this.Controls.Add( this.btnLoad );
 			this.Controls.Add( this.btnDelete );
-			this.Controls.Add( this.btnMark );
+			this.Controls.Add( this.btnFlag );
 			this.Controls.Add( this.lblTotal );
 			this.Controls.Add( label1 );
 			this.Controls.Add( this.btnPurge );
@@ -265,7 +265,7 @@
 
 		private System.Windows.Forms.Button btnLoad;
 
-		private System.Windows.Forms.Button btnMark;
+		private System.Windows.Forms.Button btnFlag;
 
 		private System.Windows.Forms.Label lblTotal;
 

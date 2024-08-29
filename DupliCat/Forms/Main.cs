@@ -233,9 +233,9 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
-		/// Marks all duplicates for deletion.
+		/// Flags all duplicates for deletion.
 		/// </summary>
-		private void Mark()
+		private void Flag()
 		{
 			foreach ( Md5SetInterface md5Set in this.md5SetList )
 			{
@@ -249,7 +249,7 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
-		/// Deletes all marked duplicates.
+		/// Deletes all flagged duplicates.
 		/// </summary>
 		private void Delete()
 		{
@@ -330,13 +330,13 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
-		/// Represents the event handler if the `Mark` button has been clicked.
+		/// Represents the event handler if the `Flag` button has been clicked.
 		/// </summary>
 		/// <param name="sender">The object which raised the event.</param>
 		/// <param name="eventArguments">The arguments of the event.</param>
-		private void btnMark_Click( object sender, EventArgs eventArguments )
+		private void btnFlag_Click( object sender, EventArgs eventArguments )
 		{
-			this.Mark();
+			this.Flag();
 		}
 
 		/// <summary>
