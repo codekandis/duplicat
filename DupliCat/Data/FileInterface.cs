@@ -1,9 +1,12 @@
-﻿namespace CodeKandis.DupliCat.Data
+﻿using SharpKandis.ComponentModel;
+
+namespace CodeKandis.DupliCat.Data
 {
 	/// <summary>
 	/// Represents the interface of any file.
 	/// </summary>
-	internal interface FileInterface
+	internal interface FileInterface:
+		NotifyPropertyInterface
 	{
 		/// <summary>
 		/// Gets the path of the file.

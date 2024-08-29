@@ -1,9 +1,12 @@
-﻿namespace CodeKandis.DupliCat.Data
+﻿using SharpKandis.ComponentModel;
+
+namespace CodeKandis.DupliCat.Data
 {
 	/// <summary>
 	/// Represents the interface of any MD5 set.
 	/// </summary>
-	internal interface Md5SetInterface
+	internal interface Md5SetInterface:
+		NotifyPropertyInterface
 	{
 		/// <summary>
 		/// Gets the checksum.
