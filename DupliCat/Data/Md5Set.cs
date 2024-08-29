@@ -38,7 +38,7 @@ namespace CodeKandis.DupliCat.Data
 		/// </summary>
 		[JsonProperty]
 		[JsonConverter( typeof( JsonFileListConverter ) )]
-		private FileListInterface files;
+		private FileListInterface files = new FileList();
 
 		/// <inheritdoc/>
 		public virtual FileListInterface Files
@@ -64,6 +64,15 @@ namespace CodeKandis.DupliCat.Data
 		{
 			this.checksum = checksum;
 			this.files = files;
+		}
+
+		/// <summary>
+		/// Constructor method.
+		/// </summary>
+		/// <param name="checksum">The MD5 checksum.</param>
+		public Md5Set( string checksum )
+		{
+			this.checksum = checksum;
 		}
 	}
 }
