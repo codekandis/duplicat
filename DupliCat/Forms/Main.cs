@@ -255,12 +255,12 @@ namespace CodeKandis.DupliCat.Forms
 			this.Mark();
 		}
 
-		private void btnDelete_Click( object sender, EventArgs e )
+		private void btnDelete_Click( object sender, EventArgs eventArguments )
 		{
 			this.Delete();
 		}
 
-		private void btnLoad_Click( object sender, EventArgs e )
+		private void btnLoad_Click( object sender, EventArgs eventArguments )
 		{
 			this.LoadListing();
 		}
@@ -275,6 +275,14 @@ namespace CodeKandis.DupliCat.Forms
 			this.ToggleLog();
 		}
 
+		private void tbxPath_DoubleClick( object sender, EventArgs eventArguments )
+		{
+			if ( DialogResult.OK == this.fbdlgPath.ShowDialog( this.Parent ) )
+			{
+				this.tbxPath.Text = this.fbdlgPath.SelectedPath;
+			}
+		}
+
 		private void lbxFiles_Format( object sender, ListControlConvertEventArgs eventArguments )
 		{
 			FileInterface file = ( FileInterface ) eventArguments.ListItem;
@@ -284,11 +292,12 @@ namespace CodeKandis.DupliCat.Forms
 			eventArguments.Value = $"{prefix} {file.Path}";
 		}
 
-		private void tbxPath_DoubleClick( object sender, EventArgs e )
+		private void lbxFiles_MouseDoubleClick( object sender, MouseEventArgs eventArguments )
 		{
-			if ( DialogResult.OK == this.fbdlgPath.ShowDialog( this.Parent ) )
+			int index = this.lbxFiles.IndexFromPoint( eventArguments.Location );
+			if ( index != ListBox.NoMatches )
 			{
-				this.tbxPath.Text = this.fbdlgPath.SelectedPath;
+				this.files[index].FlagDeletion = !this.files.Current.FlagDeletion;
 			}
 		}
 	}

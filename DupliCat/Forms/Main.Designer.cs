@@ -78,6 +78,7 @@
 			this.lbxFiles.Size = new System.Drawing.Size( 982, 905 );
 			this.lbxFiles.TabIndex = 4;
 			this.lbxFiles.Format += new System.Windows.Forms.ListControlConvertEventHandler( this.lbxFiles_Format );
+			this.lbxFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler( this.lbxFiles_MouseDoubleClick );
 			// 
 			// btnSave
 			// 
