@@ -101,6 +101,7 @@
 			this.lbxMd5Sets.Name = "lbxMd5Sets";
 			this.lbxMd5Sets.Size = new System.Drawing.Size( 982, 905 );
 			this.lbxMd5Sets.TabIndex = 7;
+			this.lbxMd5Sets.Format += new System.Windows.Forms.ListControlConvertEventHandler( this.lbxMd5Sets_Format );
 			// 
 			// tbxPath
 			// 

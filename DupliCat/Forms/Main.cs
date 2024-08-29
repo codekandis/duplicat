@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -293,6 +292,24 @@ namespace CodeKandis.DupliCat.Forms
 			{
 				this.tbxPath.Text = this.fbdlgPath.SelectedPath;
 			}
+		}
+
+		private void lbxMd5Sets_Format( object sender, ListControlConvertEventArgs eventArguments )
+		{
+			Md5SetInterface md5Set = ( Md5SetInterface ) eventArguments.ListItem;
+			string index = this
+				.md5Sets
+				.IndexOf( md5Set )
+				.ToString()
+				.PadLeft(
+					this
+						.md5Sets
+						.Count
+						.ToString()
+						.Length
+				);
+
+			eventArguments.Value = $"{index} :: {md5Set.Checksum}";
 		}
 
 		private void lbxFiles_Format( object sender, ListControlConvertEventArgs eventArguments )
