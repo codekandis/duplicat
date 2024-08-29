@@ -61,8 +61,10 @@
     <Compile Include="Data\Md5SetList.cs" />
     <Compile Include="Io\DirectoryScanner.cs" />
     <Compile Include="Io\DirectoryScannerInterface.cs" />
+    <Compile Include="Io\DirectoryRemoverInterface.cs" />
     <Compile Include="Io\Md5FileChecksumDeterminator.cs" />
     <Compile Include="Io\Md5FileChecksumDeterminatorInterface.cs" />
+    <Compile Include="Io\RecursivelyEmptyDirectoryRemover.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Json\Converters\JsonFileListConverter.cs" />
