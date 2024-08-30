@@ -52,7 +52,7 @@ namespace CodeKandis.DupliCat.Forms
 		/// <summary>
 		/// Stores the files.
 		/// </summary>
-		private readonly FileListInterface fileList = new FileList();
+		private FileListInterface fileList = new FileList();
 
 		/// <summary>
 		/// Stores the bindable data source of files.
@@ -142,7 +142,9 @@ namespace CodeKandis.DupliCat.Forms
 
 			if ( null == this.projects.Current?.Md5Sets )
 			{
+				this.md5SetList = null;
 				this.md5Sets.RefreshWith( null );
+				this.fileList = null;
 				this.files.RefreshWith( null );
 
 				this.lblTotal.Text = "0";
@@ -150,6 +152,7 @@ namespace CodeKandis.DupliCat.Forms
 				return;
 			}
 
+			this.md5SetList = this.projects.Current.Md5Sets;
 			this.md5Sets.RefreshWith( this.projects.Current.Md5Sets );
 
 			this.lblTotal.Text = this.md5Sets.Count.ToString();
@@ -162,11 +165,13 @@ namespace CodeKandis.DupliCat.Forms
 		{
 			if ( null == this.md5Sets.Current?.Files )
 			{
+				this.fileList = null;
 				this.files.RefreshWith( null );
 
 				return;
 			}
 
+			this.fileList = this.md5Sets.Current.Files;
 			this.files.RefreshWith( this.md5Sets.Current.Files );
 		}
 
