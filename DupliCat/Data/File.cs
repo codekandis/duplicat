@@ -15,7 +15,7 @@ namespace CodeKandis.DupliCat.Data
 		/// Stores the path of the file.
 		/// </summary>
 		[JsonProperty( PropertyName = "path" )]
-		private string path;
+		private string path = string.Empty;
 
 		/// <inheritdoc/>
 		public virtual string Path
@@ -24,7 +24,7 @@ namespace CodeKandis.DupliCat.Data
 			{
 				return this.path;
 			}
-			private set
+			set
 			{
 				this.PropertyChangingRaise();
 				this.path = value;
@@ -51,15 +51,6 @@ namespace CodeKandis.DupliCat.Data
 				this.flagDeletion = value;
 				this.PropertyChangedRaise();
 			}
-		}
-
-		/// <summary>
-		/// Constructor method.
-		/// </summary>
-		/// <param name="path">The path of the file.</param>
-		public File( string path )
-		{
-			this.path = path;
 		}
 	}
 }

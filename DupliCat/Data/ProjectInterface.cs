@@ -23,6 +23,7 @@ namespace CodeKandis.DupliCat.Data
 		Md5SetListInterface Md5Sets
 		{
 			get;
+			set;
 		}
 	}
 }

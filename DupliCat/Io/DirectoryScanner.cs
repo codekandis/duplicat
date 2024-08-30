@@ -60,7 +60,10 @@ namespace CodeKandis.DupliCat.Io
 				foreach ( string filePath in filePaths )
 				{
 					files.Add(
-						new File( filePath )
+						new File()
+						{
+							Path = filePath
+						}
 					);
 				}
 			}

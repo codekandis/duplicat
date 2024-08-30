@@ -1,4 +1,3 @@
-using System;
 using CodeKandis.DupliCat.Serialization.Json.Converters;
 using Newtonsoft.Json;
 using SharpKandis.ComponentModel;
@@ -17,7 +16,7 @@ namespace CodeKandis.DupliCat.Data
 		/// Stores the path.
 		/// </summary>
 		[JsonProperty]
-		private string path;
+		private string path = string.Empty;
 
 		/// <inheritdoc/>
 		public virtual string Path
@@ -39,7 +38,7 @@ namespace CodeKandis.DupliCat.Data
 		/// </summary>
 		[JsonProperty]
 		[JsonConverter( typeof( JsonMd5SetListConverter ) )]
-		private Md5SetListInterface md5Sets;
+		private Md5SetListInterface md5Sets = new Md5SetList();
 
 		/// <inheritdoc/>
 		public virtual Md5SetListInterface Md5Sets
@@ -48,32 +47,12 @@ namespace CodeKandis.DupliCat.Data
 			{
 				return this.md5Sets;
 			}
-			private set
+			set
 			{
 				this.PropertyChangingRaise();
 				this.md5Sets = value;
 				this.PropertyChangedRaise();
 			}
-		}
-
-		/// <summary>
-		/// Constructor method.
-		/// </summary>
-		/// <param name="path">The path.</param>
-		/// <param name="md5Sets">The MD5 sets.</param>
-		public Project( string path, Md5SetListInterface md5Sets )
-		{
-			this.path = path;
-			this.md5Sets = md5Sets;
-		}
-
-		/// <summary>
-		/// Constructor method.
-		/// </summary>
-		/// <param name="path">The path.</param>
-		public Project( string path )
-		{
-			this.path = path;
 		}
 	}
 }

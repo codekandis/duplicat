@@ -14,6 +14,7 @@ namespace CodeKandis.DupliCat.Data
 		string Checksum
 		{
 			get;
+			set;
 		}
 
 		/// <summary>
@@ -22,6 +23,7 @@ namespace CodeKandis.DupliCat.Data
 		FileListInterface Files
 		{
 			get;
+			set;
 		}
 	}
 }

@@ -16,7 +16,7 @@ namespace CodeKandis.DupliCat.Data
 		/// Stores the MD5 checksum.
 		/// </summary>
 		[JsonProperty]
-		private string checksum;
+		private string checksum = string.Empty;
 
 		/// <inheritdoc/>
 		public virtual string Checksum
@@ -25,7 +25,7 @@ namespace CodeKandis.DupliCat.Data
 			{
 				return this.checksum;
 			}
-			private set
+			set
 			{
 				this.PropertyChangingRaise();
 				this.checksum = value;
@@ -38,7 +38,7 @@ namespace CodeKandis.DupliCat.Data
 		/// </summary>
 		[JsonProperty]
 		[JsonConverter( typeof( JsonFileListConverter ) )]
-		private FileListInterface files;
+		private FileListInterface files = new FileList();
 
 		/// <inheritdoc/>
 		public virtual FileListInterface Files
@@ -47,32 +47,12 @@ namespace CodeKandis.DupliCat.Data
 			{
 				return this.files;
 			}
-			private set
+			set
 			{
 				this.PropertyChangingRaise();
 				this.files = value;
 				this.PropertyChangedRaise();
 			}
-		}
-
-		/// <summary>
-		/// Constructor method.
-		/// </summary>
-		/// <param name="checksum">The MD5 checksum.</param>
-		/// <param name="files">The files.</param>
-		public Md5Set( string checksum, FileListInterface files )
-		{
-			this.checksum = checksum;
-			this.files = files;
-		}
-
-		/// <summary>
-		/// Constructor method.
-		/// </summary>
-		/// <param name="checksum">The MD5 checksum.</param>
-		public Md5Set( string checksum )
-		{
-			this.checksum = checksum;
 		}
 	}
 }

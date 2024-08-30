@@ -27,12 +27,17 @@ namespace CodeKandis.DupliCat.Forms
 		/// <summary>
 		/// Represents the path of the projects file.
 		/// </summary>
-		private string projectsFilePath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, Main.ProjectsFileName );
+		private readonly string projectsFilePath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, Main.ProjectsFileName );
 
 		/// <summary>
-		/// Stores the bindable data source of MD5 sets.
+		/// Stores the projects.
 		/// </summary>
-		private BindableDataSource<Md5SetInterface> md5Sets;
+		private ProjectListInterface projectList = new ProjectList();
+
+		/// <summary>
+		/// Stores the bindable data source of projects.
+		/// </summary>
+		private BindableDataSource<ProjectInterface> projects;
 
 		/// <summary>
 		/// Stores the MD5 sets.
@@ -40,14 +45,19 @@ namespace CodeKandis.DupliCat.Forms
 		private Md5SetListInterface md5SetList = new Md5SetList();
 
 		/// <summary>
-		/// Stores the bindable data source of files.
+		/// Stores the bindable data source of MD5 sets.
 		/// </summary>
-		private BindableDataSource<FileInterface> files;
+		private BindableDataSource<Md5SetInterface> md5Sets;
 
 		/// <summary>
 		/// Stores the files.
 		/// </summary>
 		private readonly FileListInterface fileList = new FileList();
+
+		/// <summary>
+		/// Stores the bindable data source of files.
+		/// </summary>
+		private BindableDataSource<FileInterface> files;
 
 		/// <summary>
 		/// Constructor method.
@@ -62,6 +72,11 @@ namespace CodeKandis.DupliCat.Forms
 		/// </summary>
 		private void Initialize()
 		{
+			this.projects = new BindableDataSource<ProjectInterface>();
+			this.projects.CurrentChanged += this.projects_CurrentChanged;
+			this.projects.RefreshWith( this.projectList );
+			this.cbxProjects.DataSource = this.projects;
+
 			this.md5Sets = new BindableDataSource<Md5SetInterface>();
 			this.md5Sets.CurrentChanged += this.md5Sets_CurrentChanged;
 			this.md5Sets.RefreshWith( this.md5SetList );
@@ -71,7 +86,80 @@ namespace CodeKandis.DupliCat.Forms
 			this.files.RefreshWith( this.fileList );
 			this.lbxFiles.DataSource = this.files;
 
-			this.LoadListing();
+			this.LoadProjects();
+		}
+
+		/// <summary>
+		/// Sets all necessary data bindings.
+		/// </summary>
+		private void SetDataBindings()
+		{
+			this.tbxPath.DataBindings.Clear();
+
+			if ( null == this.projects.Current )
+			{
+				this.tbxPath.Clear();
+
+				return;
+			}
+
+			this.tbxPath.DataBindings.Add( "Text", this.projects.Current, "Path" );
+		}
+
+		/// <summary>
+		/// Sets the control states.
+		/// </summary>
+		private void SetControlStates()
+		{
+			bool enabledState = 0 != this.projects.DataSource.Count;
+
+			this.cbxProjects.Enabled = enabledState;
+			this.btnRemoveProject.Enabled = enabledState;
+			this.tbxPath.Enabled = enabledState;
+			this.btnScan.Enabled = enabledState;
+			this.btnPurge.Enabled = enabledState;
+			this.btnFlag.Enabled = enabledState;
+			this.btnDelete.Enabled = enabledState;
+			this.btnEmptyDirs.Enabled = enabledState;
+			this.lbxMd5Sets.Enabled = enabledState;
+			this.lbxFiles.Enabled = enabledState;
+		}
+
+		/// <summary>
+		/// Changes the current project.
+		/// </summary>
+		private void ChangeProject()
+		{
+			this.SetDataBindings();
+
+			if ( null == this.projects.Current?.Md5Sets )
+			{
+				this.md5Sets.RefreshWith( null );
+				this.files.RefreshWith( null );
+
+				this.lblTotal.Text = "0";
+
+				return;
+			}
+
+			this.md5Sets.RefreshWith( this.projects.Current.Md5Sets );
+
+			this.lblTotal.Text = this.md5Sets.Count.ToString();
+		}
+
+		/// <summary>
+		/// Changes the current MD5 set.
+		/// </summary>
+		private void ChangeMd5Set()
+		{
+			if ( null == this.md5Sets.Current?.Files )
+			{
+				this.files.RefreshWith( null );
+
+				return;
+			}
+
+			this.files.RefreshWith( this.md5Sets.Current.Files );
 		}
 
 		/// <summary>
@@ -90,35 +178,67 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
-		/// Loads the listing.
+		/// Adds a new project.
 		/// </summary>
-		private void LoadListing()
+		private void AddProject()
 		{
-			this.md5SetList = new Md5SetListJsonFileDeserializer( this.projectsFilePath )
-				.Deserialize();
-
-			this.md5Sets.RefreshWith(
-				this.md5SetList
+			this.projects.Add(
+				new Project()
 			);
 
-			this.lblTotal.Text = this.md5Sets.Count.ToString();
+			this.SetControlStates();
 		}
 
 		/// <summary>
-		/// Saves the listing.
+		/// Removes a project.
 		/// </summary>
-		private void SaveListing()
+		private void RemoveProject()
 		{
-			new Md5SetListJsonFileSerializer( this.projectsFilePath )
-				.Serialize( this.md5SetList );
+			this.projects.Remove(
+				this.projects.Current
+			);
+
+			this.SetControlStates();
 		}
 
 		/// <summary>
-		/// Toggles the log visibility.
+		/// Loads the projects.
 		/// </summary>
-		private void ToggleLog()
+		private void LoadProjects()
 		{
-			this.pnlLog.Visible = !this.pnlLog.Visible;
+			this.projectList = new ProjectListJsonFileDeserializer( this.projectsFilePath )
+				.Deserialize();
+
+			this.projects.RefreshWith(
+				this.projectList
+			);
+
+			if ( 0 < this.projects.Count )
+			{
+				this.md5SetList = this.projects.Current.Md5Sets;
+			}
+
+			this.SetControlStates();
+		}
+
+		/// <summary>
+		/// Saves the projects.
+		/// </summary>
+		private void SaveProjects()
+		{
+			new ProjectListJsonFileSerializer( this.projectsFilePath )
+				.Serialize( this.projectList );
+		}
+
+		/// <summary>
+		/// Opens the folder dialog.
+		/// </summary>
+		private void OpenFolderDialog()
+		{
+			if ( DialogResult.OK == this.fbdlgPath.ShowDialog( this.Parent ) )
+			{
+				this.tbxPath.Text = this.fbdlgPath.SelectedPath;
+			}
 		}
 
 		/// <summary>
@@ -197,16 +317,18 @@ namespace CodeKandis.DupliCat.Forms
 					foreach ( KeyValuePair<string, FileListInterface> keyValuePair in mappedFiles )
 					{
 						this.md5SetList.Add(
-							new Md5Set(
-								keyValuePair.Key,
-								keyValuePair.Value
-							)
+							new Md5Set()
+							{
+								Checksum = keyValuePair.Key,
+								Files = keyValuePair.Value
+							}
 						);
 					}
 
+					this.projects.Current.Md5Sets = this.md5SetList;
+
 					this.md5Sets.Clear();
 					this.md5Sets.RefreshWith( this.md5SetList );
-
 
 					this.Invoke(
 						() =>
@@ -296,6 +418,14 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
+		/// Toggles the log visibility.
+		/// </summary>
+		private void ToggleLog()
+		{
+			this.pnlLog.Visible = !this.pnlLog.Visible;
+		}
+
+		/// <summary>
 		/// Represents the event handler if the form has been loaded.
 		/// </summary>
 		/// <param name="sender">The object which raised the event.</param>
@@ -306,13 +436,85 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
+		/// Represents the event handler if the current item of the bound data source of projects has been changed.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void projects_CurrentChanged( object sender, EventArgs eventArguments )
+		{
+			this.ChangeProject();
+		}
+
+		/// <summary>
 		/// Represents the event handler if the current item of the bound data source of MD5 sets has been changed.
 		/// </summary>
 		/// <param name="sender">The object which raised the event.</param>
 		/// <param name="eventArguments">The arguments of the event.</param>
 		private void md5Sets_CurrentChanged( object sender, EventArgs eventArguments )
 		{
-			this.files.RefreshWith( this.md5Sets.Current.Files );
+			this.ChangeMd5Set();
+		}
+
+		/// <summary>
+		/// Represents the event handler if the current item of the combo box of projects will be formatted.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void cbxProjects_Format( object sender, ListControlConvertEventArgs eventArguments )
+		{
+			ProjectInterface project = ( ProjectInterface ) eventArguments.ListItem;
+
+			eventArguments.Value = project.Path;
+		}
+
+		/// <summary>
+		/// Represents the event handler if the `AddProject` button has been clicked.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void btnAddProject_Click( object sender, EventArgs eventArguments )
+		{
+			this.AddProject();
+		}
+
+		/// <summary>
+		/// Represents the event handler if the `RemoveProject` button has been clicked.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void btnRemoveProject_Click( object sender, EventArgs eventArguments )
+		{
+			this.RemoveProject();
+		}
+
+		/// <summary>
+		/// Represents the event handler if the `Load` button has been clicked.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void btnLoad_Click( object sender, EventArgs eventArguments )
+		{
+			this.LoadProjects();
+		}
+
+		/// <summary>
+		/// Represents the event handler if the `Save` button has been clicked.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void btnSave_Click( object sender, EventArgs eventArguments )
+		{
+			this.SaveProjects();
+		}
+
+		/// <summary>
+		/// Represents the event handler if the text box of the path has been double clicked.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void tbxPath_DoubleClick( object sender, EventArgs eventArguments )
+		{
+			this.OpenFolderDialog();
 		}
 
 		/// <summary>
@@ -366,26 +568,6 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
-		/// Represents the event handler if the `Load` button has been clicked.
-		/// </summary>
-		/// <param name="sender">The object which raised the event.</param>
-		/// <param name="eventArguments">The arguments of the event.</param>
-		private void btnLoad_Click( object sender, EventArgs eventArguments )
-		{
-			this.LoadListing();
-		}
-
-		/// <summary>
-		/// Represents the event handler if the `Save` button has been clicked.
-		/// </summary>
-		/// <param name="sender">The object which raised the event.</param>
-		/// <param name="eventArguments">The arguments of the event.</param>
-		private void btnSave_Click( object sender, EventArgs eventArguments )
-		{
-			this.SaveListing();
-		}
-
-		/// <summary>
 		/// Represents the event handler if the `Log` button has been clicked.
 		/// </summary>
 		/// <param name="sender">The object which raised the event.</param>
@@ -393,19 +575,6 @@ namespace CodeKandis.DupliCat.Forms
 		private void btnLog_Click( object sender, EventArgs eventArguments )
 		{
 			this.ToggleLog();
-		}
-
-		/// <summary>
-		/// Represents the event handler if the text box of the path has been double clicked.
-		/// </summary>
-		/// <param name="sender">The object which raised the event.</param>
-		/// <param name="eventArguments">The arguments of the event.</param>
-		private void tbxPath_DoubleClick( object sender, EventArgs eventArguments )
-		{
-			if ( DialogResult.OK == this.fbdlgPath.ShowDialog( this.Parent ) )
-			{
-				this.tbxPath.Text = this.fbdlgPath.SelectedPath;
-			}
 		}
 
 		/// <summary>
@@ -432,7 +601,7 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
-		/// Represents the event handler if the current item of the list box of files sets will be formatted.
+		/// Represents the event handler if the current item of the list box of files will be formatted.
 		/// </summary>
 		/// <param name="sender">The object which raised the event.</param>
 		/// <param name="eventArguments">The arguments of the event.</param>

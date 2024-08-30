@@ -14,6 +14,7 @@ namespace CodeKandis.DupliCat.Data
 		string Path
 		{
 			get;
+			set;
 		}
 
 		/// <summary>
