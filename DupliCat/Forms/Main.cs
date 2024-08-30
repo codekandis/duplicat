@@ -422,6 +422,23 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
+		/// Lower cases all file extensions.
+		/// </summary>
+		private void LowerCaseExtensions()
+		{
+			foreach ( Md5SetInterface md5Set in this.md5SetList )
+			{
+				foreach ( FileInterface file in md5Set.Files )
+				{
+					file.Path = new FileExtensionLowerCaser( file.Path )
+						.LowerCase();
+				}
+			}
+			
+			this.md5Sets.DataSource.ResetBindings();
+		}
+
+		/// <summary>
 		/// Toggles the log visibility.
 		/// </summary>
 		private void ToggleLog()
@@ -569,6 +586,16 @@ namespace CodeKandis.DupliCat.Forms
 		private void btnEmptyDirs_Click( object sender, EventArgs eventArguments )
 		{
 			this.RemoveEmptyDirs();
+		}
+
+		/// <summary>
+		/// Represents the event handler if the `Lower Case` button has been clicked.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void btnLowerCase_Click( object sender, EventArgs eventArguments )
+		{
+			this.LowerCaseExtensions();
 		}
 
 		/// <summary>

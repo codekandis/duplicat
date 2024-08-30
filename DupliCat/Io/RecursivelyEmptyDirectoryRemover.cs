@@ -18,7 +18,7 @@ namespace CodeKandis.DupliCat.Io
 		/// <summary>
 		/// Constructor method.
 		/// </summary>
-		/// <param name="path">The path of the directory to scan.</param>
+		/// <param name="path">The path of the directory to remove.</param>
 		public RecursivelyEmptyDirectoryRemover( string path )
 		{
 			this.path = path;
@@ -43,9 +43,7 @@ namespace CodeKandis.DupliCat.Io
 			}
 		}
 
-		/// <summary>
-		/// Removes the directory.
-		/// </summary>
+		/// <inheritdoc/>
 		public virtual void Remove()
 		{
 			this.RemoveEmptyDirectory( this.path );

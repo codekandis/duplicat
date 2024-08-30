@@ -50,6 +50,7 @@
 			this.btnAddProject = new System.Windows.Forms.Button();
 			this.btnRemoveProject = new System.Windows.Forms.Button();
 			this.tbxNotes = new SharpKandis.Windows.Forms.TextBoxPlaceholder();
+			this.btnLowerCase = new System.Windows.Forms.Button();
 			label1 = new System.Windows.Forms.Label();
 			this.pnlLog.SuspendLayout();
 			this.SuspendLayout();
@@ -65,10 +66,10 @@
 			// 
 			// btnScan
 			// 
-			this.btnScan.Location = new System.Drawing.Point( 1532, 11 );
+			this.btnScan.Location = new System.Drawing.Point( 1457, 11 );
 			this.btnScan.Name = "btnScan";
 			this.btnScan.Size = new System.Drawing.Size( 76, 22 );
-			this.btnScan.TabIndex = 2;
+			this.btnScan.TabIndex = 8;
 			this.btnScan.Text = "Scan";
 			this.btnScan.Click += new System.EventHandler( this.btnScan_Click );
 			// 
@@ -80,17 +81,17 @@
 			this.lbxFiles.Location = new System.Drawing.Point( 1000, 55 );
 			this.lbxFiles.Name = "lbxFiles";
 			this.lbxFiles.Size = new System.Drawing.Size( 982, 904 );
-			this.lbxFiles.TabIndex = 4;
+			this.lbxFiles.TabIndex = 16;
 			this.lbxFiles.Format += new System.Windows.Forms.ListControlConvertEventHandler( this.lbxFiles_Format );
 			this.lbxFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler( this.lbxFiles_MouseDoubleClick );
 			// 
 			// btnSave
 			// 
-			this.btnSave.Location = new System.Drawing.Point( 598, 11 );
+			this.btnSave.Location = new System.Drawing.Point( 544, 11 );
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size( 76, 22 );
+			this.btnSave.Size = new System.Drawing.Size( 22, 22 );
 			this.btnSave.TabIndex = 5;
-			this.btnSave.Text = "Save";
+			this.btnSave.Text = "📥";
 			this.btnSave.Click += new System.EventHandler( this.btnSave_Click );
 			// 
 			// lbxMd5Sets
@@ -101,16 +102,16 @@
 			this.lbxMd5Sets.Location = new System.Drawing.Point( 12, 55 );
 			this.lbxMd5Sets.Name = "lbxMd5Sets";
 			this.lbxMd5Sets.Size = new System.Drawing.Size( 982, 904 );
-			this.lbxMd5Sets.TabIndex = 7;
+			this.lbxMd5Sets.TabIndex = 15;
 			this.lbxMd5Sets.Format += new System.Windows.Forms.ListControlConvertEventHandler( this.lbxMd5Sets_Format );
 			// 
 			// tbxPath
 			// 
-			this.tbxPath.Location = new System.Drawing.Point( 674, 12 );
+			this.tbxPath.Location = new System.Drawing.Point( 571, 12 );
 			this.tbxPath.Name = "tbxPath";
 			this.tbxPath.PlaceholderText = "Path";
-			this.tbxPath.Size = new System.Drawing.Size( 657, 20 );
-			this.tbxPath.TabIndex = 8;
+			this.tbxPath.Size = new System.Drawing.Size( 685, 20 );
+			this.tbxPath.TabIndex = 6;
 			this.tbxPath.DoubleClick += new System.EventHandler( this.tbxPath_DoubleClick );
 			// 
 			// pnlLog
@@ -130,7 +131,7 @@
 			this.tbxLog.ReadOnly = true;
 			this.tbxLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.tbxLog.Size = new System.Drawing.Size( 876, 798 );
-			this.tbxLog.TabIndex = 0;
+			this.tbxLog.TabIndex = 17;
 			this.tbxLog.WordWrap = false;
 			// 
 			// btnLog
@@ -138,16 +139,16 @@
 			this.btnLog.Location = new System.Drawing.Point( 1907, 11 );
 			this.btnLog.Name = "btnLog";
 			this.btnLog.Size = new System.Drawing.Size( 76, 22 );
-			this.btnLog.TabIndex = 12;
+			this.btnLog.TabIndex = 14;
 			this.btnLog.Text = "Log";
 			this.btnLog.Click += new System.EventHandler( this.btnLog_Click );
 			// 
 			// btnPurge
 			// 
-			this.btnPurge.Location = new System.Drawing.Point( 1607, 11 );
+			this.btnPurge.Location = new System.Drawing.Point( 1532, 11 );
 			this.btnPurge.Name = "btnPurge";
 			this.btnPurge.Size = new System.Drawing.Size( 76, 22 );
-			this.btnPurge.TabIndex = 13;
+			this.btnPurge.TabIndex = 9;
 			this.btnPurge.Text = "Purge";
 			this.btnPurge.Click += new System.EventHandler( this.btnPurge_Click );
 			// 
@@ -172,19 +173,19 @@
 			// 
 			// btnFlag
 			// 
-			this.btnFlag.Location = new System.Drawing.Point( 1682, 11 );
+			this.btnFlag.Location = new System.Drawing.Point( 1607, 11 );
 			this.btnFlag.Name = "btnFlag";
 			this.btnFlag.Size = new System.Drawing.Size( 76, 22 );
-			this.btnFlag.TabIndex = 16;
+			this.btnFlag.TabIndex = 10;
 			this.btnFlag.Text = "Flag";
 			this.btnFlag.Click += new System.EventHandler( this.btnFlag_Click );
 			// 
 			// btnDelete
 			// 
-			this.btnDelete.Location = new System.Drawing.Point( 1757, 11 );
+			this.btnDelete.Location = new System.Drawing.Point( 1682, 11 );
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size( 76, 22 );
-			this.btnDelete.TabIndex = 17;
+			this.btnDelete.TabIndex = 11;
 			this.btnDelete.Text = "Delete";
 			this.btnDelete.Click += new System.EventHandler( this.btnDelete_Click );
 			// 
@@ -192,18 +193,18 @@
 			// 
 			this.btnLoad.Location = new System.Drawing.Point( 523, 11 );
 			this.btnLoad.Name = "btnLoad";
-			this.btnLoad.Size = new System.Drawing.Size( 76, 22 );
-			this.btnLoad.TabIndex = 18;
-			this.btnLoad.Text = "Load";
+			this.btnLoad.Size = new System.Drawing.Size( 22, 22 );
+			this.btnLoad.TabIndex = 4;
+			this.btnLoad.Text = "📤";
 			this.btnLoad.Click += new System.EventHandler( this.btnLoad_Click );
 			// 
 			// tbxPatterns
 			// 
-			this.tbxPatterns.Location = new System.Drawing.Point( 1332, 12 );
+			this.tbxPatterns.Location = new System.Drawing.Point( 1257, 12 );
 			this.tbxPatterns.Name = "tbxPatterns";
 			this.tbxPatterns.PlaceholderText = "Patterns";
 			this.tbxPatterns.Size = new System.Drawing.Size( 200, 20 );
-			this.tbxPatterns.TabIndex = 19;
+			this.tbxPatterns.TabIndex = 7;
 			// 
 			// fbdlgPath
 			// 
@@ -212,10 +213,10 @@
 			// 
 			// btnEmptyDirs
 			// 
-			this.btnEmptyDirs.Location = new System.Drawing.Point( 1832, 11 );
+			this.btnEmptyDirs.Location = new System.Drawing.Point( 1757, 11 );
 			this.btnEmptyDirs.Name = "btnEmptyDirs";
 			this.btnEmptyDirs.Size = new System.Drawing.Size( 76, 22 );
-			this.btnEmptyDirs.TabIndex = 20;
+			this.btnEmptyDirs.TabIndex = 12;
 			this.btnEmptyDirs.Text = "Empty Dirs";
 			this.btnEmptyDirs.Click += new System.EventHandler( this.btnEmptyDirs_Click );
 			// 
@@ -226,7 +227,7 @@
 			this.cbxProjects.Location = new System.Drawing.Point( 12, 12 );
 			this.cbxProjects.Name = "cbxProjects";
 			this.cbxProjects.Size = new System.Drawing.Size( 268, 21 );
-			this.cbxProjects.TabIndex = 21;
+			this.cbxProjects.TabIndex = 0;
 			this.cbxProjects.Format += new System.Windows.Forms.ListControlConvertEventHandler( this.cbxProjects_Format );
 			// 
 			// btnAddProject
@@ -234,7 +235,7 @@
 			this.btnAddProject.Location = new System.Drawing.Point( 481, 11 );
 			this.btnAddProject.Name = "btnAddProject";
 			this.btnAddProject.Size = new System.Drawing.Size( 22, 22 );
-			this.btnAddProject.TabIndex = 22;
+			this.btnAddProject.TabIndex = 2;
 			this.btnAddProject.Text = "+";
 			this.btnAddProject.Click += new System.EventHandler( this.btnAddProject_Click );
 			// 
@@ -243,7 +244,7 @@
 			this.btnRemoveProject.Location = new System.Drawing.Point( 502, 11 );
 			this.btnRemoveProject.Name = "btnRemoveProject";
 			this.btnRemoveProject.Size = new System.Drawing.Size( 22, 22 );
-			this.btnRemoveProject.TabIndex = 23;
+			this.btnRemoveProject.TabIndex = 3;
 			this.btnRemoveProject.Text = "-";
 			this.btnRemoveProject.Click += new System.EventHandler( this.btnRemoveProject_Click );
 			// 
@@ -253,13 +254,23 @@
 			this.tbxNotes.Name = "tbxNotes";
 			this.tbxNotes.PlaceholderText = "Notes";
 			this.tbxNotes.Size = new System.Drawing.Size( 200, 20 );
-			this.tbxNotes.TabIndex = 24;
+			this.tbxNotes.TabIndex = 1;
+			// 
+			// btnLowerCase
+			// 
+			this.btnLowerCase.Location = new System.Drawing.Point( 1832, 11 );
+			this.btnLowerCase.Name = "btnLowerCase";
+			this.btnLowerCase.Size = new System.Drawing.Size( 76, 22 );
+			this.btnLowerCase.TabIndex = 13;
+			this.btnLowerCase.Text = "Lower Case";
+			this.btnLowerCase.Click += new System.EventHandler( this.btnLowerCase_Click );
 			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size( 1994, 971 );
+			this.Controls.Add( this.btnLowerCase );
 			this.Controls.Add( this.tbxNotes );
 			this.Controls.Add( this.btnRemoveProject );
 			this.Controls.Add( this.btnAddProject );
@@ -290,6 +301,8 @@
 			this.ResumeLayout( false );
 			this.PerformLayout();
 		}
+
+		private System.Windows.Forms.Button btnLowerCase;
 
 		private SharpKandis.Windows.Forms.TextBoxPlaceholder tbxNotes;
 
