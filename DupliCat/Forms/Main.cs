@@ -94,15 +94,18 @@ namespace CodeKandis.DupliCat.Forms
 		/// </summary>
 		private void SetDataBindings()
 		{
+			this.tbxNotes.DataBindings.Clear();
 			this.tbxPath.DataBindings.Clear();
 
 			if ( null == this.projects.Current )
 			{
+				this.tbxNotes.Clear();
 				this.tbxPath.Clear();
 
 				return;
 			}
 
+			this.tbxNotes.DataBindings.Add( "Text", this.projects.Current, "Notes" );
 			this.tbxPath.DataBindings.Add( "Text", this.projects.Current, "Path" );
 		}
 
@@ -114,6 +117,7 @@ namespace CodeKandis.DupliCat.Forms
 			bool enabledState = 0 != this.projects.DataSource.Count;
 
 			this.cbxProjects.Enabled = enabledState;
+			this.tbxNotes.Enabled = enabledState;
 			this.btnRemoveProject.Enabled = enabledState;
 			this.tbxPath.Enabled = enabledState;
 			this.btnScan.Enabled = enabledState;

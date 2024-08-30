@@ -49,6 +49,7 @@
 			this.cbxProjects = new System.Windows.Forms.ComboBox();
 			this.btnAddProject = new System.Windows.Forms.Button();
 			this.btnRemoveProject = new System.Windows.Forms.Button();
+			this.tbxNotes = new SharpKandis.Windows.Forms.TextBoxPlaceholder();
 			label1 = new System.Windows.Forms.Label();
 			this.pnlLog.SuspendLayout();
 			this.SuspendLayout();
@@ -85,7 +86,7 @@
 			// 
 			// btnSave
 			// 
-			this.btnSave.Location = new System.Drawing.Point( 397, 11 );
+			this.btnSave.Location = new System.Drawing.Point( 598, 11 );
 			this.btnSave.Name = "btnSave";
 			this.btnSave.Size = new System.Drawing.Size( 76, 22 );
 			this.btnSave.TabIndex = 5;
@@ -105,10 +106,10 @@
 			// 
 			// tbxPath
 			// 
-			this.tbxPath.Location = new System.Drawing.Point( 473, 12 );
+			this.tbxPath.Location = new System.Drawing.Point( 674, 12 );
 			this.tbxPath.Name = "tbxPath";
 			this.tbxPath.PlaceholderText = "Path";
-			this.tbxPath.Size = new System.Drawing.Size( 858, 20 );
+			this.tbxPath.Size = new System.Drawing.Size( 657, 20 );
 			this.tbxPath.TabIndex = 8;
 			this.tbxPath.DoubleClick += new System.EventHandler( this.tbxPath_DoubleClick );
 			// 
@@ -189,7 +190,7 @@
 			// 
 			// btnLoad
 			// 
-			this.btnLoad.Location = new System.Drawing.Point( 322, 11 );
+			this.btnLoad.Location = new System.Drawing.Point( 523, 11 );
 			this.btnLoad.Name = "btnLoad";
 			this.btnLoad.Size = new System.Drawing.Size( 76, 22 );
 			this.btnLoad.TabIndex = 18;
@@ -230,7 +231,7 @@
 			// 
 			// btnAddProject
 			// 
-			this.btnAddProject.Location = new System.Drawing.Point( 280, 11 );
+			this.btnAddProject.Location = new System.Drawing.Point( 481, 11 );
 			this.btnAddProject.Name = "btnAddProject";
 			this.btnAddProject.Size = new System.Drawing.Size( 22, 22 );
 			this.btnAddProject.TabIndex = 22;
@@ -239,18 +240,27 @@
 			// 
 			// btnRemoveProject
 			// 
-			this.btnRemoveProject.Location = new System.Drawing.Point( 301, 11 );
+			this.btnRemoveProject.Location = new System.Drawing.Point( 502, 11 );
 			this.btnRemoveProject.Name = "btnRemoveProject";
 			this.btnRemoveProject.Size = new System.Drawing.Size( 22, 22 );
 			this.btnRemoveProject.TabIndex = 23;
 			this.btnRemoveProject.Text = "-";
 			this.btnRemoveProject.Click += new System.EventHandler( this.btnRemoveProject_Click );
 			// 
+			// tbxNotes
+			// 
+			this.tbxNotes.Location = new System.Drawing.Point( 281, 12 );
+			this.tbxNotes.Name = "tbxNotes";
+			this.tbxNotes.PlaceholderText = "Notes";
+			this.tbxNotes.Size = new System.Drawing.Size( 200, 20 );
+			this.tbxNotes.TabIndex = 24;
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size( 1994, 971 );
+			this.Controls.Add( this.tbxNotes );
 			this.Controls.Add( this.btnRemoveProject );
 			this.Controls.Add( this.btnAddProject );
 			this.Controls.Add( this.cbxProjects );
@@ -280,6 +290,8 @@
 			this.ResumeLayout( false );
 			this.PerformLayout();
 		}
+
+		private SharpKandis.Windows.Forms.TextBoxPlaceholder tbxNotes;
 
 		private System.Windows.Forms.Button btnAddProject;
 

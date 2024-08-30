@@ -9,6 +9,15 @@ namespace CodeKandis.DupliCat.Data
 		NotifyPropertyInterface
 	{
 		/// <summary>
+		/// Gets / sets the notes.
+		/// </summary>
+		string Notes
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
 		/// Gets / sets the path.
 		/// </summary>
 		string Path

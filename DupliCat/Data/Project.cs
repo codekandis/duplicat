@@ -13,6 +13,27 @@ namespace CodeKandis.DupliCat.Data
 		ProjectInterface
 	{
 		/// <summary>
+		/// Stores the notes.
+		/// </summary>
+		[JsonProperty]
+		private string notes;
+
+		/// <inheritdoc/>
+		public virtual string Notes
+		{
+			get
+			{
+				return this.notes;
+			}
+			set
+			{
+				this.PropertyChangingRaise();
+				this.notes = value;
+				this.PropertyChangedRaise();
+			}
+		}
+
+		/// <summary>
 		/// Stores the path.
 		/// </summary>
 		[JsonProperty]
