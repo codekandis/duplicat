@@ -87,7 +87,7 @@
 			// 
 			// btnSave
 			// 
-			this.btnSave.Location = new System.Drawing.Point( 544, 11 );
+			this.btnSave.Location = new System.Drawing.Point( 32, 11 );
 			this.btnSave.Name = "btnSave";
 			this.btnSave.Size = new System.Drawing.Size( 22, 22 );
 			this.btnSave.TabIndex = 5;
@@ -107,10 +107,10 @@
 			// 
 			// tbxPath
 			// 
-			this.tbxPath.Location = new System.Drawing.Point( 571, 12 );
+			this.tbxPath.Location = new System.Drawing.Point( 566, 12 );
 			this.tbxPath.Name = "tbxPath";
 			this.tbxPath.PlaceholderText = "Path";
-			this.tbxPath.Size = new System.Drawing.Size( 685, 20 );
+			this.tbxPath.Size = new System.Drawing.Size( 690, 20 );
 			this.tbxPath.TabIndex = 6;
 			this.tbxPath.DoubleClick += new System.EventHandler( this.tbxPath_DoubleClick );
 			// 
@@ -191,7 +191,7 @@
 			// 
 			// btnLoad
 			// 
-			this.btnLoad.Location = new System.Drawing.Point( 523, 11 );
+			this.btnLoad.Location = new System.Drawing.Point( 11, 11 );
 			this.btnLoad.Name = "btnLoad";
 			this.btnLoad.Size = new System.Drawing.Size( 22, 22 );
 			this.btnLoad.TabIndex = 4;
@@ -224,7 +224,7 @@
 			// 
 			this.cbxProjects.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbxProjects.FormattingEnabled = true;
-			this.cbxProjects.Location = new System.Drawing.Point( 12, 12 );
+			this.cbxProjects.Location = new System.Drawing.Point( 54, 12 );
 			this.cbxProjects.Name = "cbxProjects";
 			this.cbxProjects.Size = new System.Drawing.Size( 268, 21 );
 			this.cbxProjects.TabIndex = 0;
@@ -232,7 +232,7 @@
 			// 
 			// btnAddProject
 			// 
-			this.btnAddProject.Location = new System.Drawing.Point( 481, 11 );
+			this.btnAddProject.Location = new System.Drawing.Point( 523, 11 );
 			this.btnAddProject.Name = "btnAddProject";
 			this.btnAddProject.Size = new System.Drawing.Size( 22, 22 );
 			this.btnAddProject.TabIndex = 2;
@@ -241,7 +241,7 @@
 			// 
 			// btnRemoveProject
 			// 
-			this.btnRemoveProject.Location = new System.Drawing.Point( 502, 11 );
+			this.btnRemoveProject.Location = new System.Drawing.Point( 544, 11 );
 			this.btnRemoveProject.Name = "btnRemoveProject";
 			this.btnRemoveProject.Size = new System.Drawing.Size( 22, 22 );
 			this.btnRemoveProject.TabIndex = 3;
@@ -250,7 +250,7 @@
 			// 
 			// tbxNotes
 			// 
-			this.tbxNotes.Location = new System.Drawing.Point( 281, 12 );
+			this.tbxNotes.Location = new System.Drawing.Point( 323, 12 );
 			this.tbxNotes.Name = "tbxNotes";
 			this.tbxNotes.PlaceholderText = "Notes";
 			this.tbxNotes.Size = new System.Drawing.Size( 200, 20 );

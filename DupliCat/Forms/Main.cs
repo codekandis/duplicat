@@ -182,30 +182,6 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
-		/// Adds a new project.
-		/// </summary>
-		private void AddProject()
-		{
-			this.projects.Add(
-				new Project()
-			);
-
-			this.SetControlStates();
-		}
-
-		/// <summary>
-		/// Removes a project.
-		/// </summary>
-		private void RemoveProject()
-		{
-			this.projects.Remove(
-				this.projects.Current
-			);
-
-			this.SetControlStates();
-		}
-
-		/// <summary>
 		/// Loads the projects.
 		/// </summary>
 		private void LoadProjects()
@@ -232,6 +208,30 @@ namespace CodeKandis.DupliCat.Forms
 		{
 			new ProjectListJsonFileSerializer( this.projectsFilePath )
 				.Serialize( this.projectList );
+		}
+
+		/// <summary>
+		/// Adds a new project.
+		/// </summary>
+		private void AddProject()
+		{
+			this.projects.Add(
+				new Project()
+			);
+
+			this.SetControlStates();
+		}
+
+		/// <summary>
+		/// Removes a project.
+		/// </summary>
+		private void RemoveProject()
+		{
+			this.projects.Remove(
+				this.projects.Current
+			);
+
+			this.SetControlStates();
 		}
 
 		/// <summary>
@@ -477,6 +477,26 @@ namespace CodeKandis.DupliCat.Forms
 		}
 
 		/// <summary>
+		/// Represents the event handler if the `Load` button has been clicked.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void btnLoad_Click( object sender, EventArgs eventArguments )
+		{
+			this.LoadProjects();
+		}
+
+		/// <summary>
+		/// Represents the event handler if the `Save` button has been clicked.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void btnSave_Click( object sender, EventArgs eventArguments )
+		{
+			this.SaveProjects();
+		}
+
+		/// <summary>
 		/// Represents the event handler if the current item of the combo box of projects will be formatted.
 		/// </summary>
 		/// <param name="sender">The object which raised the event.</param>
@@ -506,26 +526,6 @@ namespace CodeKandis.DupliCat.Forms
 		private void btnRemoveProject_Click( object sender, EventArgs eventArguments )
 		{
 			this.RemoveProject();
-		}
-
-		/// <summary>
-		/// Represents the event handler if the `Load` button has been clicked.
-		/// </summary>
-		/// <param name="sender">The object which raised the event.</param>
-		/// <param name="eventArguments">The arguments of the event.</param>
-		private void btnLoad_Click( object sender, EventArgs eventArguments )
-		{
-			this.LoadProjects();
-		}
-
-		/// <summary>
-		/// Represents the event handler if the `Save` button has been clicked.
-		/// </summary>
-		/// <param name="sender">The object which raised the event.</param>
-		/// <param name="eventArguments">The arguments of the event.</param>
-		private void btnSave_Click( object sender, EventArgs eventArguments )
-		{
-			this.SaveProjects();
 		}
 
 		/// <summary>
