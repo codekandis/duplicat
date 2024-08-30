@@ -96,17 +96,20 @@ namespace CodeKandis.DupliCat.Forms
 		{
 			this.tbxNotes.DataBindings.Clear();
 			this.tbxPath.DataBindings.Clear();
+			this.tbxPatterns.DataBindings.Clear();
 
 			if ( null == this.projects.Current )
 			{
 				this.tbxNotes.Clear();
 				this.tbxPath.Clear();
+				this.tbxPatterns.Clear();
 
 				return;
 			}
 
 			this.tbxNotes.DataBindings.Add( "Text", this.projects.Current, "Notes" );
 			this.tbxPath.DataBindings.Add( "Text", this.projects.Current, "Path" );
+			this.tbxPatterns.DataBindings.Add( "Text", this.projects.Current, "Patterns" );
 		}
 
 		/// <summary>
@@ -120,6 +123,7 @@ namespace CodeKandis.DupliCat.Forms
 			this.tbxNotes.Enabled = enabledState;
 			this.btnRemoveProject.Enabled = enabledState;
 			this.tbxPath.Enabled = enabledState;
+			this.tbxPatterns.Enabled = enabledState;
 			this.btnScan.Enabled = enabledState;
 			this.btnPurge.Enabled = enabledState;
 			this.btnFlag.Enabled = enabledState;

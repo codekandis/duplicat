@@ -27,6 +27,15 @@ namespace CodeKandis.DupliCat.Data
 		}
 
 		/// <summary>
+		/// Gets / sets the patterns.
+		/// </summary>
+		string Patterns
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
 		/// Gets the MD5 sets of the project.
 		/// </summary>
 		Md5SetListInterface Md5Sets

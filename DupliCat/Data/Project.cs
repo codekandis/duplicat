@@ -55,6 +55,27 @@ namespace CodeKandis.DupliCat.Data
 		}
 
 		/// <summary>
+		/// Stores the patterns.
+		/// </summary>
+		[JsonProperty]
+		private string patterns = string.Empty;
+
+		/// <inheritdoc/>
+		public virtual string Patterns
+		{
+			get
+			{
+				return this.patterns;
+			}
+			set
+			{
+				this.PropertyChangingRaise();
+				this.patterns = value;
+				this.PropertyChangedRaise();
+			}
+		}
+
+		/// <summary>
 		/// Stores the MD5 sets.
 		/// </summary>
 		[JsonProperty]
