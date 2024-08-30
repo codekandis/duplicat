@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CodeKandis.DupliCat.Data;
-using SharpKandis.Collections.Generic;
 using File = CodeKandis.DupliCat.Data.File;
 
 namespace CodeKandis.DupliCat.Io

@@ -70,13 +70,16 @@
     <Compile Include="Serialization\Json\Converters\JsonFileListConverter.cs" />
     <Compile Include="Serialization\Json\Converters\JsonFileListItemConverter.cs" />
     <Compile Include="Serialization\Json\Converters\JsonListItemConverter.cs" />
+    <Compile Include="Serialization\Json\Converters\JsonMd5SetListConverter.cs" />
     <Compile Include="Serialization\Json\Converters\JsonMd5SetListItemConverter.cs" />
+    <Compile Include="Serialization\Json\Converters\JsonProjectListConverter.cs" />
+    <Compile Include="Serialization\Json\Converters\JsonProjectListItemConverter.cs" />
     <Compile Include="Serialization\Json\JsonDeserializerInterface.cs" />
     <Compile Include="Serialization\Json\JsonFileDeserializer.cs" />
     <Compile Include="Serialization\Json\JsonFileSerializer.cs" />
     <Compile Include="Serialization\Json\JsonSerializerInterface.cs" />
-    <Compile Include="Serialization\Json\Md5SetListJsonFileDeserializer.cs" />
-    <Compile Include="Serialization\Json\Md5SetListJsonFileSerializer.cs" />
+    <Compile Include="Serialization\Json\ProjectListJsonFileDeserializer.cs" />
+    <Compile Include="Serialization\Json\ProjectListJsonFileSerializer.cs" />
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
