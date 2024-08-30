@@ -45,6 +45,10 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Project.cs" />
+    <Compile Include="Data\ProjectInterface.cs" />
+    <Compile Include="Data\ProjectList.cs" />
+    <Compile Include="Data\ProjectListInterface.cs" />
     <Compile Include="Forms\Main.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,3 +1,4 @@
+using System;
 using CodeKandis.DupliCat.Serialization.Json.Converters;
 using Newtonsoft.Json;
 using SharpKandis.ComponentModel;
@@ -5,52 +6,52 @@ using SharpKandis.ComponentModel;
 namespace CodeKandis.DupliCat.Data
 {
 	/// <summary>
-	/// Represents a MD5 set.
+	/// Represents a project.
 	/// </summary>
 	[JsonObject( MemberSerialization.OptIn )]
-	internal class Md5Set:
+	internal class Project:
 		NotifyPropertyAbstract,
-		Md5SetInterface
+		ProjectInterface
 	{
 		/// <summary>
-		/// Stores the MD5 checksum.
+		/// Stores the path.
 		/// </summary>
 		[JsonProperty]
-		private string checksum;
+		private string path;
 
 		/// <inheritdoc/>
-		public virtual string Checksum
+		public virtual string Path
 		{
 			get
 			{
-				return this.checksum;
+				return this.path;
 			}
-			private set
+			set
 			{
 				this.PropertyChangingRaise();
-				this.checksum = value;
+				this.path = value;
 				this.PropertyChangedRaise();
 			}
 		}
 
 		/// <summary>
-		/// Stores the files.
+		/// Stores the MD5 sets.
 		/// </summary>
 		[JsonProperty]
-		[JsonConverter( typeof( JsonFileListConverter ) )]
-		private FileListInterface files;
+		[JsonConverter( typeof( JsonMd5SetListConverter ) )]
+		private Md5SetListInterface md5Sets;
 
 		/// <inheritdoc/>
-		public virtual FileListInterface Files
+		public virtual Md5SetListInterface Md5Sets
 		{
 			get
 			{
-				return this.files;
+				return this.md5Sets;
 			}
 			private set
 			{
 				this.PropertyChangingRaise();
-				this.files = value;
+				this.md5Sets = value;
 				this.PropertyChangedRaise();
 			}
 		}
@@ -58,21 +59,21 @@ namespace CodeKandis.DupliCat.Data
 		/// <summary>
 		/// Constructor method.
 		/// </summary>
-		/// <param name="checksum">The MD5 checksum.</param>
-		/// <param name="files">The files.</param>
-		public Md5Set( string checksum, FileListInterface files )
+		/// <param name="path">The path.</param>
+		/// <param name="md5Sets">The MD5 sets.</param>
+		public Project( string path, Md5SetListInterface md5Sets )
 		{
-			this.checksum = checksum;
-			this.files = files;
+			this.path = path;
+			this.md5Sets = md5Sets;
 		}
 
 		/// <summary>
 		/// Constructor method.
 		/// </summary>
-		/// <param name="checksum">The MD5 checksum.</param>
-		public Md5Set( string checksum )
+		/// <param name="path">The path.</param>
+		public Project( string path )
 		{
-			this.checksum = checksum;
+			this.path = path;
 		}
 	}
 }
