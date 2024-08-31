@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CodeKandis.DupliCat.Data;
 
 namespace CodeKandis.DupliCat.Io
@@ -10,7 +11,9 @@ namespace CodeKandis.DupliCat.Io
 		/// <summary>
 		/// Scans the directory.
 		/// </summary>
+		/// <param name="path">The path of the directory to scan.</param>
+		/// <param name="patterns">The patterns to scan for.</param>
 		/// <returns>The files of the directory.</returns>
-		FileListInterface Scan();
+		FileListInterface Scan( string path, IEnumerable<string> patterns );
 	}
 }

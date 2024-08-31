@@ -12,34 +12,12 @@ namespace CodeKandis.DupliCat.Io
 	internal class DirectoryScanner:
 		DirectoryScannerInterface
 	{
-		/// <summary>
-		/// Stores the path of the directory to scan.
-		/// </summary>
-		private readonly string path;
-
-		/// <summary>
-		/// Stores the patterns to scan for.
-		/// </summary>
-		private readonly IEnumerable<string> patterns;
-
-		/// <summary>
-		/// Constructor method.
-		/// </summary>
-		/// <param name="path">The path of the directory to scan.</param>
-		/// <param name="patterns">The patterns to scan for.</param>
-		public DirectoryScanner( string path, IEnumerable<string> patterns )
-		{
-			this.path = path;
-			this.patterns = patterns;
-		}
-
 		/// <inheritdoc/>
-		public virtual FileListInterface Scan()
+		public virtual FileListInterface Scan( string path, IEnumerable<string> patterns )
 		{
 			FileList files = new FileList();
 
-			List<string> preparedPatterns = this
-				.patterns
+			List<string> preparedPatterns = patterns
 				.Where(
 					pattern => string.Empty != pattern
 				)
@@ -56,11 +34,11 @@ namespace CodeKandis.DupliCat.Io
 
 			foreach ( string preparedPattern in preparedPatterns )
 			{
-				IEnumerable<string> filePaths = Directory.EnumerateFiles( this.path, preparedPattern, SearchOption.AllDirectories );
+				IEnumerable<string> filePaths = Directory.EnumerateFiles( path, preparedPattern, SearchOption.AllDirectories );
 				foreach ( string filePath in filePaths )
 				{
 					files.Add(
-						new File()
+						new File
 						{
 							Path = filePath
 						}

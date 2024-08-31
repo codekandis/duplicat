@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 
 namespace CodeKandis.DupliCat.Io
@@ -9,27 +8,13 @@ namespace CodeKandis.DupliCat.Io
 	internal class FileExtensionLowerCaser:
 		FileExtensionLowerCaserInterface
 	{
-		/// <summary>
-		/// Stores the path of the file to lower case its extension.
-		/// </summary>
-		private readonly string path;
-
-		/// <summary>
-		/// Constructor method.
-		/// </summary>
-		/// <param name="path">The path of the file to lower case its extension.</param>
-		public FileExtensionLowerCaser( string path )
-		{
-			this.path = path;
-		}
-
 		/// <inheritdoc/>
-		public virtual string LowerCase()
+		public virtual string LowerCase( string path )
 		{
-			string lowerCasedExtension = Path.GetExtension( this.path ).ToLower();
-			string newPath = Path.ChangeExtension( this.path, lowerCasedExtension );
-			
-			File.Move( this.path, newPath );
+			string lowerCasedExtension = Path.GetExtension( path ).ToLower();
+			string newPath = Path.ChangeExtension( path, lowerCasedExtension );
+
+			File.Move( path, newPath );
 
 			return newPath;
 		}

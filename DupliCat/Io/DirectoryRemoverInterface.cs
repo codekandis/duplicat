@@ -8,6 +8,7 @@ namespace CodeKandis.DupliCat.Io
 		/// <summary>
 		/// Removes the directory.
 		/// </summary>
-		void Remove();
+		/// <param name="path">The path of the directory to remove.</param>
+		void Remove( string path );
 	}
 }

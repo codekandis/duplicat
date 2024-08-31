@@ -11,20 +11,6 @@ namespace CodeKandis.DupliCat.Io
 		DirectoryRemoverInterface
 	{
 		/// <summary>
-		/// Stores the path of the directory to remove.
-		/// </summary>
-		private readonly string path;
-
-		/// <summary>
-		/// Constructor method.
-		/// </summary>
-		/// <param name="path">The path of the directory to remove.</param>
-		public RecursivelyEmptyDirectoryRemover( string path )
-		{
-			this.path = path;
-		}
-
-		/// <summary>
 		/// Recursively removes an empty directory.
 		/// </summary>
 		/// <param name="rootDirectoryPath">The root directory path to iterate.</param>
@@ -44,9 +30,9 @@ namespace CodeKandis.DupliCat.Io
 		}
 
 		/// <inheritdoc/>
-		public virtual void Remove()
+		public virtual void Remove( string path )
 		{
-			this.RemoveEmptyDirectory( this.path );
+			this.RemoveEmptyDirectory( path );
 		}
 	}
 }

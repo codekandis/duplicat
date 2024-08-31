@@ -8,7 +8,8 @@ namespace CodeKandis.DupliCat.Io
 		/// <summary>
 		/// Lower cases the file extension.
 		/// </summary>
+		/// <param name="path">The path of the file to lower case its extension.</param>
 		/// <returns>The new path of the file.</returns>
-		string LowerCase();
+		string LowerCase( string path );
 	}
 }

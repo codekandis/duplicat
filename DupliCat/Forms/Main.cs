@@ -273,11 +273,11 @@ namespace CodeKandis.DupliCat.Forms
 
 					Dictionary<string, FileListInterface> mappedFiles = new Dictionary<string, FileListInterface>();
 
-					FileListInterface scannedFileList = new DirectoryScanner(
+					FileListInterface scannedFileList = new DirectoryScanner()
+						.Scan(
 							this.tbxPath.Text,
 							this.tbxPatterns.Text.Split( ' ' )
-						)
-						.Scan();
+						);
 
 					this.Invoke(
 						() =>
@@ -289,14 +289,14 @@ namespace CodeKandis.DupliCat.Forms
 						$"Files: {scannedFileList.Count}"
 					);
 
+					Md5FileChecksumDeterminatorInterface md5FileChecksumDeterminator = new Md5FileChecksumDeterminator();
 					foreach ( FileInterface file in scannedFileList )
 					{
 						try
 						{
 							this.Log( file.Path );
 
-							string determinedMd5Checksum = new Md5FileChecksumDeterminator( file )
-								.Determine();
+							string determinedMd5Checksum = md5FileChecksumDeterminator.Determine( file );
 							bool md5ChecksumExists = mappedFiles.ContainsKey( determinedMd5Checksum );
 
 							FileListInterface mappedFileList;
@@ -426,8 +426,8 @@ namespace CodeKandis.DupliCat.Forms
 		/// </summary>
 		private void RemoveEmptyDirs()
 		{
-			new RecursivelyEmptyDirectoryRemover( this.tbxPath.Text )
-				.Remove();
+			new RecursivelyEmptyDirectoryRemover()
+				.Remove( this.tbxPath.Text );
 		}
 
 		/// <summary>
@@ -435,15 +435,16 @@ namespace CodeKandis.DupliCat.Forms
 		/// </summary>
 		private void LowerCaseExtensions()
 		{
+			FileExtensionLowerCaserInterface fileExtensionLowerCaser = new FileExtensionLowerCaser();
+
 			foreach ( Md5SetInterface md5Set in this.md5SetList )
 			{
 				foreach ( FileInterface file in md5Set.Files )
 				{
-					file.Path = new FileExtensionLowerCaser( file.Path )
-						.LowerCase();
+					file.Path = fileExtensionLowerCaser.LowerCase( file.Path );
 				}
 			}
-			
+
 			this.md5Sets.DataSource.ResetBindings();
 		}
 

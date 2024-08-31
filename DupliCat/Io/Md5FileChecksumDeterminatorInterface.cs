@@ -1,3 +1,5 @@
+using CodeKandis.DupliCat.Data;
+
 namespace CodeKandis.DupliCat.Io
 {
 	/// <summary>
@@ -8,7 +10,8 @@ namespace CodeKandis.DupliCat.Io
 		/// <summary>
 		/// Determines the MD5 checksum.
 		/// </summary>
+		/// <param name="file">The file to determine its MD5 checksum.</param>
 		/// <returns>The determined MD5 checksum.</returns>
-		string Determine();
+		string Determine( FileInterface file );
 	}
 }
