@@ -38,7 +38,7 @@
 			this.tbxLog = new System.Windows.Forms.TextBox();
 			this.btnLog = new System.Windows.Forms.Button();
 			this.btnPurge = new System.Windows.Forms.Button();
-			this.prbrScanning = new System.Windows.Forms.ProgressBar();
+			this.prbrProgress = new System.Windows.Forms.ProgressBar();
 			this.lblTotal = new System.Windows.Forms.Label();
 			this.btnFlag = new System.Windows.Forms.Button();
 			this.btnDelete = new System.Windows.Forms.Button();
@@ -51,6 +51,7 @@
 			this.btnRemoveProject = new System.Windows.Forms.Button();
 			this.tbxNotes = new SharpKandis.Windows.Forms.TextBoxPlaceholder();
 			this.btnLowerCase = new System.Windows.Forms.Button();
+			this.btnMetaData = new System.Windows.Forms.Button();
 			label1 = new System.Windows.Forms.Label();
 			this.pnlLog.SuspendLayout();
 			this.SuspendLayout();
@@ -66,7 +67,7 @@
 			// 
 			// btnScan
 			// 
-			this.btnScan.Location = new System.Drawing.Point( 1457, 11 );
+			this.btnScan.Location = new System.Drawing.Point( 1381, 11 );
 			this.btnScan.Name = "btnScan";
 			this.btnScan.Size = new System.Drawing.Size( 76, 22 );
 			this.btnScan.TabIndex = 8;
@@ -110,7 +111,7 @@
 			this.tbxPath.Location = new System.Drawing.Point( 566, 12 );
 			this.tbxPath.Name = "tbxPath";
 			this.tbxPath.PlaceholderText = "Path";
-			this.tbxPath.Size = new System.Drawing.Size( 690, 20 );
+			this.tbxPath.Size = new System.Drawing.Size( 614, 20 );
 			this.tbxPath.TabIndex = 6;
 			this.tbxPath.DoubleClick += new System.EventHandler( this.tbxPath_DoubleClick );
 			// 
@@ -132,7 +133,6 @@
 			this.tbxLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.tbxLog.Size = new System.Drawing.Size( 876, 798 );
 			this.tbxLog.TabIndex = 17;
-			this.tbxLog.WordWrap = false;
 			// 
 			// btnLog
 			// 
@@ -145,22 +145,22 @@
 			// 
 			// btnPurge
 			// 
-			this.btnPurge.Location = new System.Drawing.Point( 1532, 11 );
+			this.btnPurge.Location = new System.Drawing.Point( 1456, 11 );
 			this.btnPurge.Name = "btnPurge";
 			this.btnPurge.Size = new System.Drawing.Size( 76, 22 );
 			this.btnPurge.TabIndex = 9;
 			this.btnPurge.Text = "Purge";
 			this.btnPurge.Click += new System.EventHandler( this.btnPurge_Click );
 			// 
-			// prbrScanning
+			// prbrProgress
 			// 
-			this.prbrScanning.Location = new System.Drawing.Point( 12, 52 );
-			this.prbrScanning.Name = "prbrScanning";
-			this.prbrScanning.Size = new System.Drawing.Size( 982, 10 );
-			this.prbrScanning.Step = 1;
-			this.prbrScanning.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-			this.prbrScanning.TabIndex = 10;
-			this.prbrScanning.Visible = false;
+			this.prbrProgress.Location = new System.Drawing.Point( 12, 52 );
+			this.prbrProgress.Name = "prbrProgress";
+			this.prbrProgress.Size = new System.Drawing.Size( 982, 10 );
+			this.prbrProgress.Step = 1;
+			this.prbrProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+			this.prbrProgress.TabIndex = 10;
+			this.prbrProgress.Visible = false;
 			// 
 			// lblTotal
 			// 
@@ -173,7 +173,7 @@
 			// 
 			// btnFlag
 			// 
-			this.btnFlag.Location = new System.Drawing.Point( 1607, 11 );
+			this.btnFlag.Location = new System.Drawing.Point( 1531, 11 );
 			this.btnFlag.Name = "btnFlag";
 			this.btnFlag.Size = new System.Drawing.Size( 76, 22 );
 			this.btnFlag.TabIndex = 10;
@@ -182,7 +182,7 @@
 			// 
 			// btnDelete
 			// 
-			this.btnDelete.Location = new System.Drawing.Point( 1682, 11 );
+			this.btnDelete.Location = new System.Drawing.Point( 1606, 11 );
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size( 76, 22 );
 			this.btnDelete.TabIndex = 11;
@@ -200,7 +200,7 @@
 			// 
 			// tbxPatterns
 			// 
-			this.tbxPatterns.Location = new System.Drawing.Point( 1257, 12 );
+			this.tbxPatterns.Location = new System.Drawing.Point( 1181, 12 );
 			this.tbxPatterns.Name = "tbxPatterns";
 			this.tbxPatterns.PlaceholderText = "Patterns";
 			this.tbxPatterns.Size = new System.Drawing.Size( 200, 20 );
@@ -213,7 +213,7 @@
 			// 
 			// btnEmptyDirs
 			// 
-			this.btnEmptyDirs.Location = new System.Drawing.Point( 1757, 11 );
+			this.btnEmptyDirs.Location = new System.Drawing.Point( 1681, 11 );
 			this.btnEmptyDirs.Name = "btnEmptyDirs";
 			this.btnEmptyDirs.Size = new System.Drawing.Size( 76, 22 );
 			this.btnEmptyDirs.TabIndex = 12;
@@ -258,18 +258,28 @@
 			// 
 			// btnLowerCase
 			// 
-			this.btnLowerCase.Location = new System.Drawing.Point( 1832, 11 );
+			this.btnLowerCase.Location = new System.Drawing.Point( 1757, 11 );
 			this.btnLowerCase.Name = "btnLowerCase";
 			this.btnLowerCase.Size = new System.Drawing.Size( 76, 22 );
 			this.btnLowerCase.TabIndex = 13;
 			this.btnLowerCase.Text = "Lower Case";
 			this.btnLowerCase.Click += new System.EventHandler( this.btnLowerCase_Click );
 			// 
+			// btnMetaData
+			// 
+			this.btnMetaData.Location = new System.Drawing.Point( 1832, 11 );
+			this.btnMetaData.Name = "btnMetaData";
+			this.btnMetaData.Size = new System.Drawing.Size( 76, 22 );
+			this.btnMetaData.TabIndex = 17;
+			this.btnMetaData.Text = "MetaData";
+			this.btnMetaData.Click += new System.EventHandler( this.btnMetaData_Click );
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size( 1994, 971 );
+			this.Controls.Add( this.btnMetaData );
 			this.Controls.Add( this.btnLowerCase );
 			this.Controls.Add( this.tbxNotes );
 			this.Controls.Add( this.btnRemoveProject );
@@ -287,7 +297,7 @@
 			this.Controls.Add( this.pnlLog );
 			this.Controls.Add( this.tbxPath );
 			this.Controls.Add( this.lbxMd5Sets );
-			this.Controls.Add( this.prbrScanning );
+			this.Controls.Add( this.prbrProgress );
 			this.Controls.Add( this.btnSave );
 			this.Controls.Add( this.lbxFiles );
 			this.Controls.Add( this.btnScan );
@@ -301,6 +311,8 @@
 			this.ResumeLayout( false );
 			this.PerformLayout();
 		}
+
+		private System.Windows.Forms.Button btnMetaData;
 
 		private System.Windows.Forms.Button btnLowerCase;
 
@@ -334,7 +346,7 @@
 
 		private System.Windows.Forms.Panel pnlLog;
 
-		private System.Windows.Forms.ProgressBar prbrScanning;
+		private System.Windows.Forms.ProgressBar prbrProgress;
 
 		private System.Windows.Forms.Button btnSave;
 

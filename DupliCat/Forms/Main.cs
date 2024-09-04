@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 using CodeKandis.DupliCat.Data;
 using CodeKandis.DupliCat.Io;
+using CodeKandis.DupliCat.Io.MetaData;
 using CodeKandis.DupliCat.Serialization.Json;
 using SharpKandis.Collections.Generic;
 using SharpKandis.Windows.Forms;
@@ -266,8 +267,8 @@ namespace CodeKandis.DupliCat.Forms
 						() =>
 						{
 							this.tbxLog.Clear();
-							this.prbrScanning.Value = 0;
-							this.prbrScanning.Show();
+							this.prbrProgress.Value = 0;
+							this.prbrProgress.Show();
 						}
 					);
 
@@ -282,7 +283,7 @@ namespace CodeKandis.DupliCat.Forms
 					this.Invoke(
 						() =>
 						{
-							this.prbrScanning.Maximum = scannedFileList.Count;
+							this.prbrProgress.Maximum = scannedFileList.Count;
 						}
 					);
 					this.Log(
@@ -309,6 +310,7 @@ namespace CodeKandis.DupliCat.Forms
 							{
 								mappedFileList = mappedFiles[ determinedMd5Checksum ];
 							}
+
 							this.Log( "... succeeded" );
 
 							mappedFileList.Add( file );
@@ -321,7 +323,7 @@ namespace CodeKandis.DupliCat.Forms
 						this.Invoke(
 							() =>
 							{
-								this.prbrScanning.Value++;
+								this.prbrProgress.Value++;
 							}
 						);
 					}
@@ -330,7 +332,7 @@ namespace CodeKandis.DupliCat.Forms
 					foreach ( KeyValuePair<string, FileListInterface> keyValuePair in mappedFiles )
 					{
 						this.md5SetList.Add(
-							new Md5Set()
+							new Md5Set
 							{
 								Checksum = keyValuePair.Key,
 								Files = keyValuePair.Value
@@ -346,7 +348,7 @@ namespace CodeKandis.DupliCat.Forms
 					this.Invoke(
 						() =>
 						{
-							this.prbrScanning.Hide();
+							this.prbrProgress.Hide();
 
 							this.lblTotal.Text = this.md5Sets.Count.ToString();
 						}
@@ -446,6 +448,100 @@ namespace CodeKandis.DupliCat.Forms
 			}
 
 			this.md5Sets.DataSource.ResetBindings();
+		}
+
+		/// <summary>
+		/// Renames all file due to their meta data creation date.
+		/// </summary>
+		private void MetaData()
+		{
+			Thread thread = new Thread(
+				() =>
+				{
+					this.Invoke(
+						() =>
+						{
+							this.tbxLog.Clear();
+							this.prbrProgress.Value = 0;
+							this.prbrProgress.Show();
+						}
+					);
+
+					MetaDataCreationDateExtractorInterface metaDataCreationDateExtractor = new MetaDataCreationDateExtractor();
+					int filesCount = this
+						.md5SetList
+						.SelectMany(
+							md5Set => md5Set.Files
+						)
+						.Count();
+
+					this.Invoke(
+						() =>
+						{
+							this.prbrProgress.Maximum = filesCount;
+						}
+					);
+					this.Log(
+						$"Files: {this.files.Count}"
+					);
+
+					foreach ( Md5SetInterface md5Set in this.md5SetList )
+					{
+						foreach ( FileInterface file in md5Set.Files )
+						{
+							this.Log( file.Path );
+
+							string creationDate = metaDataCreationDateExtractor.Extract( file.Path );
+
+							if ( null == creationDate )
+							{
+								this.Log( "... <null>" );
+							}
+							else
+							{
+								this.Log( $"... {creationDate}" );
+
+								string fileDirectory = Path.GetDirectoryName( file.Path );
+								string fileExtension = Path.GetExtension( file.Path );
+								string newFileName = DateTime
+									.ParseExact( creationDate, "yyyy:MM:dd HH:mm:ss", null )
+									.ToString( "yyyy-MM-dd HH.mm.ss" );
+
+								try
+								{
+									string targetPath = $@"{fileDirectory}\{newFileName}{fileExtension}";
+
+									new FileMover()
+										.Move( file.Path, targetPath );
+
+									this.Log( "... succeeded" );
+
+									file.Path = targetPath;
+								}
+								catch ( Exception )
+								{
+									this.Log( "... failed" );
+								}
+							}
+
+							this.Invoke(
+								() =>
+								{
+									this.prbrProgress.Value++;
+								}
+							);
+						}
+					}
+
+					this.Invoke(
+						() =>
+						{
+							this.prbrProgress.Hide();
+						}
+					);
+				}
+			);
+			thread.Start();
 		}
 
 		/// <summary>
@@ -606,6 +702,16 @@ namespace CodeKandis.DupliCat.Forms
 		private void btnLowerCase_Click( object sender, EventArgs eventArguments )
 		{
 			this.LowerCaseExtensions();
+		}
+
+		/// <summary>
+		/// Represents the event handler if the `ExIf` button has been clicked.
+		/// </summary>
+		/// <param name="sender">The object which raised the event.</param>
+		/// <param name="eventArguments">The arguments of the event.</param>
+		private void btnMetaData_Click( object sender, EventArgs eventArguments )
+		{
+			this.MetaData();
 		}
 
 		/// <summary>
