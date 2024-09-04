@@ -71,6 +71,8 @@
     <Compile Include="Io\DirectoryRemoverInterface.cs" />
     <Compile Include="Io\FileExtensionLowerCaser.cs" />
     <Compile Include="Io\FileExtensionLowerCaserInterface.cs" />
+    <Compile Include="Io\FileMover.cs" />
+    <Compile Include="Io\FileMoverInterface.cs" />
     <Compile Include="Io\Md5FileChecksumDeterminator.cs" />
     <Compile Include="Io\Md5FileChecksumDeterminatorInterface.cs" />
     <Compile Include="Io\MetaData\FileExtensionMetaDataCreationDateExtractorMappings.cs" />
