@@ -10,6 +10,7 @@ internal static class Program
 	[ STAThread ]
 	private static void Main()
 	{
+		Application.SetUnhandledExceptionMode( UnhandledExceptionMode.CatchException );
 		Application.EnableVisualStyles();
 		Application.SetCompatibleTextRenderingDefault( false );
 		Application.Run(
