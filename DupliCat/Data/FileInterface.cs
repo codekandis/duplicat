@@ -1,29 +1,28 @@
 ﻿using SharpKandis.ComponentModel;
 
-namespace CodeKandis.DupliCat.Data
+namespace CodeKandis.DupliCat.Data;
+
+/// <summary>
+/// Represents the interface of any file.
+/// </summary>
+internal interface FileInterface:
+	NotifyPropertyInterface
 {
 	/// <summary>
-	/// Represents the interface of any file.
+	/// Gets the path of the file.
 	/// </summary>
-	internal interface FileInterface:
-		NotifyPropertyInterface
+	string Path
 	{
-		/// <summary>
-		/// Gets the path of the file.
-		/// </summary>
-		string Path
-		{
-			get;
-			set;
-		}
+		get;
+		set;
+	}
 
-		/// <summary>
-		/// Gets / sets  the flag if the file must be deleted.
-		/// </summary>
-		bool FlagDeletion
-		{
-			get;
-			set;
-		}
+	/// <summary>
+	/// Gets / sets  the flag if the file must be deleted.
+	/// </summary>
+	bool FlagDeletion
+	{
+		get;
+		set;
 	}
 }

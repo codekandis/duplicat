@@ -1,29 +1,28 @@
 ﻿using SharpKandis.ComponentModel;
 
-namespace CodeKandis.DupliCat.Data
+namespace CodeKandis.DupliCat.Data;
+
+/// <summary>
+/// Represents the interface of any MD5 set.
+/// </summary>
+internal interface Md5SetInterface:
+	NotifyPropertyInterface
 {
 	/// <summary>
-	/// Represents the interface of any MD5 set.
+	/// Gets the checksum.
 	/// </summary>
-	internal interface Md5SetInterface:
-		NotifyPropertyInterface
+	string Checksum
 	{
-		/// <summary>
-		/// Gets the checksum.
-		/// </summary>
-		string Checksum
-		{
-			get;
-			set;
-		}
+		get;
+		set;
+	}
 
-		/// <summary>
-		/// Gets the files matching the checksum.
-		/// </summary>
-		FileListInterface Files
-		{
-			get;
-			set;
-		}
+	/// <summary>
+	/// Gets the files matching the checksum.
+	/// </summary>
+	FileListInterface Files
+	{
+		get;
+		set;
 	}
 }
