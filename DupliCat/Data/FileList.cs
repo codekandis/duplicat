@@ -8,4 +8,17 @@ namespace CodeKandis.DupliCat.Data;
 [ JsonArray( ItemConverterType = typeof( JsonFileListItemConverter ) ) ]
 internal class FileList:
 	List< FileInterface >,
-	FileListInterface;
+	FileListInterface
+{
+	/// <summary>Constructor method.</summary>
+	public FileList()
+	{
+	}
+
+	/// <summary>Constructor method.</summary>
+	/// <param name="initialFiles">The initial files of the list.</param>
+	public FileList( IEnumerable< FileInterface > initialFiles )
+		: base( initialFiles )
+	{
+	}
+}

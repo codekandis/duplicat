@@ -8,7 +8,6 @@ using CodeKandis.DupliCat.Data;
 using CodeKandis.DupliCat.Io;
 using CodeKandis.DupliCat.Io.MetaData;
 using CodeKandis.DupliCat.Serialization.Json;
-using SharpKandis.Collections.Generic;
 using SharpKandis.Windows.Forms;
 using File = System.IO.File;
 
@@ -19,10 +18,16 @@ internal partial class Main:
 	Form
 {
 	/// <summary>Represents the name of the projects file.</summary>
-	private const string ProjectsFileName = "projects.json";
+	private const string ERROR_LOG_NAME = "errors.log";
 
 	/// <summary>Represents the path of the projects file.</summary>
-	private readonly string projectsFilePath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, Main.ProjectsFileName );
+	private readonly string errorLogPath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, Main.ERROR_LOG_NAME );
+
+	/// <summary>Represents the name of the projects file.</summary>
+	private const string PROJECTS_FILE_NAME = "projects.json";
+
+	/// <summary>Represents the path of the projects file.</summary>
+	private readonly string projectsFilePath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, Main.PROJECTS_FILE_NAME );
 
 	/// <summary>Stores the projects.</summary>
 	private ProjectListInterface projectList = new ProjectList();
@@ -51,6 +56,10 @@ internal partial class Main:
 	/// <summary>Initializes the form.</summary>
 	private void Initialize()
 	{
+		Application.ThreadException                += this.Application_ThreadException;
+		Application.ApplicationExit                += this.Application_ApplicationExit;
+		AppDomain.CurrentDomain.UnhandledException += this.AppGui_UnhandledException;
+
 		this.projects                =  new BindableDataSource< ProjectInterface >();
 		this.projects.CurrentChanged += this.projects_CurrentChanged;
 		this.projects.RefreshWith( this.projectList );
@@ -153,10 +162,31 @@ internal partial class Main:
 		this.Invoke(
 			() =>
 			{
-				this.tbxLog.AppendText( message );
-				this.tbxLog.AppendText( Environment.NewLine );
+				this.tbxLog.AppendText( $"{message}{Environment.NewLine}" );
 			}
 		);
+	}
+
+	/// <summary>Logs an error message.</summary>
+	/// <param name="message">The error message to log.</param>
+	private void LogError( string message )
+	{
+		this.Invoke(
+			() =>
+			{
+				this.tbxErrorLog.AppendText( $"{message}{Environment.NewLine}" );
+			}
+		);
+	}
+
+	/// <summary>Logs an error message to the error file.</summary>
+	/// <param name="message">The error message to log.</param>
+	private void LogErrorToFile( string message )
+	{
+		using FileStream   file         = File.Open( this.errorLogPath, FileMode.Create );
+		using StreamWriter streamWriter = new StreamWriter( file );
+
+		streamWriter.WriteLine( message );
 	}
 
 	/// <summary>Loads the projects.</summary>
@@ -213,44 +243,83 @@ internal partial class Main:
 		}
 	}
 
+	/// <summary>Prepares the processing of files.</summary>
+	/// <param name="accumulator">The accumulator to fetch the files to process.</param>
+	/// <returns>The accumulated files to process.</returns>
+	private FileListInterface PrepareProcessing( Func< IEnumerable< FileInterface > > accumulator )
+	{
+		FileListInterface filesToProcess = new FileList(
+			accumulator()
+		);
+
+		this.Invoke(
+			() =>
+			{
+				this.tbxLog.Clear();
+				this.tbxLog.Show();
+				this.tbxErrorLog.Clear();
+				this.tbxErrorLog.Show();
+
+				this.prbrProgress.Value   = 0;
+				this.prbrProgress.Maximum = filesToProcess.Count;
+				this.prbrProgress.Show();
+			}
+		);
+
+		this.Log(
+			$"Files: {filesToProcess.Count}"
+		);
+
+		return filesToProcess;
+	}
+
+	/// <summary>Increases the progress.</summary>
+	private void IncreaseProgress()
+	{
+		this.Invoke(
+			() => this.prbrProgress.Value++
+		);
+	}
+
+	/// <summary>Postpares the processing of files.</summary>
+	private void PostpareProcessing()
+	{
+		this.Invoke(
+			() =>
+			{
+				this.prbrProgress.Hide();
+				this.lblTotal.Text = this.md5Sets.Count.ToString();
+			}
+		);
+
+		this.Log( "---" );
+		this.Log( "... finished" );
+
+		this.md5Sets.DataSource.ResetBindings();
+	}
+
 	/// <summary>Scans the directory.</summary>
 	private void Scan()
 	{
 		Thread thread = new Thread(
 			() =>
 			{
-				this.Invoke(
-					() =>
-					{
-						this.tbxLog.Clear();
-						this.prbrProgress.Value = 0;
-						this.prbrProgress.Show();
-					}
+				FileListInterface filesToProcess = this.PrepareProcessing(
+					() => new DirectoryScanner()
+						.Scan(
+							this.tbxPath.Text,
+							this.tbxPatterns.Text.Split( ' ' )
+						)
 				);
 
 				Dictionary< string, FileListInterface > mappedFiles = new Dictionary< string, FileListInterface >();
 
-				FileListInterface scannedFileList = new DirectoryScanner()
-					.Scan(
-						this.tbxPath.Text,
-						this.tbxPatterns.Text.Split( ' ' )
-					);
-
-				this.Invoke(
-					() =>
-					{
-						this.prbrProgress.Maximum = scannedFileList.Count;
-					}
-				);
-				this.Log(
-					$"Files: {scannedFileList.Count}"
-				);
-
 				Md5FileChecksumDeterminatorInterface md5FileChecksumDeterminator = new Md5FileChecksumDeterminator();
-				foreach ( FileInterface file in scannedFileList )
+				foreach ( FileInterface file in filesToProcess )
 				{
 					try
 					{
+						this.Log( "---" );
 						this.Log( file.Path );
 
 						string determinedMd5Checksum = md5FileChecksumDeterminator.Determine( file );
@@ -271,17 +340,16 @@ internal partial class Main:
 
 						mappedFileList.Add( file );
 					}
-					catch ( Exception )
+					catch ( Exception exception )
 					{
+						this.LogError( "---" );
+						this.LogError( file.Path );
+						this.LogError( exception.Message );
+
 						this.Log( "... failed" );
 					}
 
-					this.Invoke(
-						() =>
-						{
-							this.prbrProgress.Value++;
-						}
-					);
+					this.IncreaseProgress();
 				}
 
 				this.md5SetList = new Md5SetList();
@@ -301,14 +369,7 @@ internal partial class Main:
 				this.md5Sets.Clear();
 				this.md5Sets.RefreshWith( this.md5SetList );
 
-				this.Invoke(
-					() =>
-					{
-						this.prbrProgress.Hide();
-
-						this.lblTotal.Text = this.md5Sets.Count.ToString();
-					}
-				);
+				this.PostpareProcessing();
 			}
 		);
 		thread.Start();
@@ -319,7 +380,7 @@ internal partial class Main:
 	{
 		for ( int n = this.md5SetList.Count - 1; n >= 0; n-- )
 		{
-			if ( 1 == this.md5SetList[ n ].Files.Count )
+			if ( 2 >= this.md5SetList[ n ].Files.Count )
 			{
 				this.md5SetList.RemoveAt( n );
 			}
@@ -332,68 +393,170 @@ internal partial class Main:
 	/// <summary>Flags all duplicates for deletion.</summary>
 	private void Flag()
 	{
-		foreach ( Md5SetInterface md5Set in this.md5SetList )
-		{
-			for ( int n = 1; n < md5Set.Files.Count; n++ )
+		Thread thread = new Thread(
+			() =>
 			{
-				md5Set.Files[ n ].FlagDeletion = true;
-			}
-		}
+				FileListInterface filesToProcess = this.PrepareProcessing(
+					() => this
+						.md5SetList
+						.SelectMany(
+							md5Set => md5Set.Files
+						)
+				);
 
-		this.md5Sets.DataSource.ResetBindings();
+				FileFlagger fileFlagger = new FileFlagger();
+				for ( int n = 1; n < filesToProcess.Count; n++ )
+				{
+					this.Log( "---" );
+					this.Log( filesToProcess[ n ].Path );
+
+					try
+					{
+						fileFlagger.Flag( filesToProcess[ n ] );
+
+						this.Log( "... succeeded" );
+					}
+					catch ( Exception exception )
+					{
+						this.LogError( "---" );
+						this.LogError( filesToProcess[ n ].Path );
+						this.LogError( exception.Message );
+
+						this.Log( "... failed" );
+					}
+
+					this.IncreaseProgress();
+				}
+
+				this.PostpareProcessing();
+			}
+		);
+		thread.Start();
 	}
 
 	/// <summary>Deletes all flagged duplicates.</summary>
 	private void Delete()
 	{
-		foreach ( Md5SetInterface md5Set in this.md5SetList )
-		{
-			md5Set
-				.Files
-				.Where(
-					file =>
-					{
-						return file.FlagDeletion;
-					}
-				)
-				.Reverse()
-				.ForEach(
-					file =>
-					{
-						if ( File.Exists( file.Path ) )
-						{
-							File.Delete( file.Path );
-						}
+		Thread thread = new Thread(
+			() =>
+			{
+				FileListInterface filesToProcess = this.PrepareProcessing(
+					() => this
+						.md5SetList
+						.SelectMany(
+							md5Set => md5Set
+								.Files
+								.Where(
+									file => file.FlagDeletion
+								)
+								.Reverse()
+						)
+				);
 
+				FileDeleter fileDeleter = new FileDeleter();
+				foreach ( FileInterface file in filesToProcess )
+				{
+					this.Log( "---" );
+					this.Log( file.Path );
+
+					try
+					{
+						fileDeleter.Delete( file );
+
+						this.Log( "... succeeded" );
+					}
+					catch ( Exception exception )
+					{
+						this.LogError( "---" );
+						this.LogError( file.Path );
+						this.LogError( exception.Message );
+
+						this.Log( "... failed" );
+					}
+
+					foreach ( Md5SetInterface md5Set in this.md5SetList )
+					{
 						md5Set.Files.Remove( file );
 					}
-				);
-		}
 
-		this.md5Sets.DataSource.ResetBindings();
+					this.IncreaseProgress();
+				}
+
+				this.Purge();
+
+				this.PostpareProcessing();
+			}
+		);
+		thread.Start();
 	}
 
 	/// <summary>Removes remaining empty directories.</summary>
 	private void RemoveEmptyDirs()
 	{
-		new RecursivelyEmptyDirectoryRemover()
-			.Remove( this.tbxPath.Text );
+		Thread thread = new Thread(
+			() =>
+			{
+				try
+				{
+					new RecursivelyEmptyDirectoryRemover()
+						.Remove( this.tbxPath.Text );
+				}
+				catch ( Exception exception )
+				{
+					this.LogError( "---" );
+					this.LogError( exception.Message );
+
+					this.Log( "... failed" );
+				}
+
+				this.PostpareProcessing();
+			}
+		);
+		thread.Start();
 	}
 
 	/// <summary>Lower cases all file extensions.</summary>
 	private void LowerCaseExtensions()
 	{
-		FileExtensionLowerCaserInterface fileExtensionLowerCaser = new FileExtensionLowerCaser();
-
-		foreach ( Md5SetInterface md5Set in this.md5SetList )
-		{
-			foreach ( FileInterface file in md5Set.Files )
+		Thread thread = new Thread(
+			() =>
 			{
-				file.Path = fileExtensionLowerCaser.LowerCase( file.Path );
-			}
-		}
+				FileListInterface filesToProcess = this.PrepareProcessing(
+					() => this
+						.md5SetList
+						.SelectMany(
+							md5Set => md5Set.Files
+						)
+				);
 
-		this.md5Sets.DataSource.ResetBindings();
+				FileExtensionLowerCaserInterface fileExtensionLowerCaser = new FileExtensionLowerCaser();
+				foreach ( FileInterface file in filesToProcess )
+				{
+					this.Log( "---" );
+					this.Log( file.Path );
+
+					try
+					{
+						fileExtensionLowerCaser.LowerCase( file );
+
+						this.Log( "... succeeded" );
+					}
+					catch ( Exception exception )
+					{
+						this.LogError( "---" );
+						this.LogError( file.Path );
+						this.LogError( exception.Message );
+
+						this.Log( "... failed" );
+					}
+
+					this.IncreaseProgress();
+				}
+
+				this.PostpareProcessing();
+			}
+		);
+		thread.Start();
 	}
 
 	/// <summary>Renames all file due to their meta data creation date.</summary>
@@ -402,41 +565,37 @@ internal partial class Main:
 		Thread thread = new Thread(
 			() =>
 			{
-				this.Invoke(
-					() =>
-					{
-						this.tbxLog.Clear();
-						this.prbrProgress.Value = 0;
-						this.prbrProgress.Show();
-					}
+				FileListInterface filesToProcess = this.PrepareProcessing(
+					() => this
+						.md5SetList
+						.SelectMany(
+							md5Set => md5Set.Files
+						)
+						.ToList()
 				);
 
 				MetaDataCreationDateExtractorInterface metaDataCreationDateExtractor = new MetaDataCreationDateExtractor();
-				int filesCount = this
-					.md5SetList
-					.SelectMany(
-						md5Set => md5Set.Files
-					)
-					.Count();
-
-				this.Invoke(
-					() =>
-					{
-						this.prbrProgress.Maximum = filesCount;
-					}
-				);
-				this.Log(
-					$"Files: {this.files.Count}"
-				);
-
-				foreach ( Md5SetInterface md5Set in this.md5SetList )
+				foreach ( FileInterface file in filesToProcess )
 				{
-					foreach ( FileInterface file in md5Set.Files )
+					this.Log( "---" );
+					this.Log( file.Path );
+
+					string creationDate = null;
+					try
 					{
-						this.Log( file.Path );
+						creationDate = metaDataCreationDateExtractor.Extract( file.Path );
+					}
+					catch ( Exception exception )
+					{
+						this.LogError( "---" );
+						this.LogError( file.Path );
+						this.LogError( exception.Message );
 
-						string creationDate = metaDataCreationDateExtractor.Extract( file.Path );
+						this.Log( "... failed" );
+					}
 
+					try
+					{
 						if ( null == creationDate )
 						{
 							this.Log( "... <null>" );
@@ -451,193 +610,209 @@ internal partial class Main:
 								.ParseExact( creationDate, "yyyy:MM:dd HH:mm:ss", null )
 								.ToString( "yyyy-MM-dd HH.mm.ss" );
 
-							try
-							{
-								string targetPath = $@"{fileDirectory}\{newFileName}{fileExtension}";
+							string targetPath = $@"{fileDirectory}\{newFileName}{fileExtension}";
 
-								new FileMover()
-									.Move( file.Path, targetPath );
+							new FileMover()
+								.Move( file.Path, targetPath );
 
-								this.Log( "... succeeded" );
+							this.Log( "... succeeded" );
 
-								file.Path = targetPath;
-							}
-							catch ( Exception )
-							{
-								this.Log( "... failed" );
-							}
+							file.Path = targetPath;
 						}
-
-						this.Invoke(
-							() =>
-							{
-								this.prbrProgress.Value++;
-							}
-						);
 					}
+					catch ( Exception exception )
+					{
+						this.LogError( "---" );
+						this.LogError( file.Path );
+						this.LogError( $"[{creationDate}] {exception.Message}" );
+
+						this.Log( "... failed" );
+					}
+
+					this.IncreaseProgress();
 				}
 
-				this.Invoke(
-					() =>
-					{
-						this.prbrProgress.Hide();
-					}
-				);
+				this.PostpareProcessing();
 			}
 		);
 		thread.Start();
 	}
 
-	/// <summary>Toggles the log visibility.</summary>
-	private void ToggleLog()
+	/// <summary>Toggles the logs visibility.</summary>
+	private void ToggleLogs()
 	{
-		this.pnlLog.Visible = !this.pnlLog.Visible;
+		this.pnlLog.Visible      = !this.pnlLog.Visible;
+		this.pnlErrorLog.Visible = !this.pnlErrorLog.Visible;
+	}
+
+	/// <summary>Represents the event handler if a thread exception occured in the application.</summary>
+	/// <param name="sender">The object which raised the event.</param>
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void Application_ThreadException( object sender, ThreadExceptionEventArgs eventArgs )
+	{
+		this.LogErrorToFile( eventArgs.Exception.Message );
+	}
+
+	/// <summary>Represents the event handler if an application thread exception occured in the application.</summary>
+	/// <param name="sender">The object which raised the event.</param>
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void Application_ApplicationExit( object sender, EventArgs eventArgs )
+	{
+		Application.ThreadException -= this.Application_ThreadException;
+	}
+
+	/// <summary>Represents the event handler if a unhandled exception occured in the app GUI.</summary>
+	/// <param name="sender">The object which raised the event.</param>
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void AppGui_UnhandledException( object sender, UnhandledExceptionEventArgs eventArgs )
+	{
+		this.LogErrorToFile( ( ( Exception ) eventArgs.ExceptionObject ).Message );
 	}
 
 	/// <summary>Represents the event handler if the form has been loaded.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void this_Load( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void this_Load( object sender, EventArgs eventArgs )
 	{
 		this.Initialize();
 	}
 
 	/// <summary>Represents the event handler if the current item of the bound data source of projects has been changed.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void projects_CurrentChanged( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void projects_CurrentChanged( object sender, EventArgs eventArgs )
 	{
 		this.ChangeProject();
 	}
 
 	/// <summary>Represents the event handler if the current item of the bound data source of MD5 sets has been changed.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void md5Sets_CurrentChanged( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void md5Sets_CurrentChanged( object sender, EventArgs eventArgs )
 	{
 		this.ChangeMd5Set();
 	}
 
 	/// <summary>Represents the event handler if the `Load` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnLoad_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnLoad_Click( object sender, EventArgs eventArgs )
 	{
 		this.LoadProjects();
 	}
 
 	/// <summary>Represents the event handler if the `Save` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnSave_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnSave_Click( object sender, EventArgs eventArgs )
 	{
 		this.SaveProjects();
 	}
 
 	/// <summary>Represents the event handler if the current item of the combo box of projects will be formatted.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void cbxProjects_Format( object sender, ListControlConvertEventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void cbxProjects_Format( object sender, ListControlConvertEventArgs eventArgs )
 	{
-		ProjectInterface project = ( ProjectInterface ) eventArguments.ListItem;
+		ProjectInterface project = ( ProjectInterface ) eventArgs.ListItem;
 
-		eventArguments.Value = project.Path;
+		eventArgs.Value = project.Path;
 	}
 
 	/// <summary>Represents the event handler if the `AddProject` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnAddProject_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnAddProject_Click( object sender, EventArgs eventArgs )
 	{
 		this.AddProject();
 	}
 
 	/// <summary>Represents the event handler if the `RemoveProject` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnRemoveProject_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnRemoveProject_Click( object sender, EventArgs eventArgs )
 	{
 		this.RemoveProject();
 	}
 
 	/// <summary>Represents the event handler if the text box of the path has been double clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void tbxPath_DoubleClick( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void tbxPath_DoubleClick( object sender, EventArgs eventArgs )
 	{
 		this.OpenFolderDialog();
 	}
 
 	/// <summary>Represents the event handler if the `Scan` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnScan_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnScan_Click( object sender, EventArgs eventArgs )
 	{
 		this.Scan();
 	}
 
 	/// <summary>Represents the event handler if the `Purge` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnPurge_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnPurge_Click( object sender, EventArgs eventArgs )
 	{
 		this.Purge();
 	}
 
 	/// <summary>Represents the event handler if the `Flag` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnFlag_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnFlag_Click( object sender, EventArgs eventArgs )
 	{
 		this.Flag();
 	}
 
 	/// <summary>Represents the event handler if the `Delete` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnDelete_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnDelete_Click( object sender, EventArgs eventArgs )
 	{
 		this.Delete();
 	}
 
 	/// <summary>Represents the event handler if the `Empty Dirs` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnEmptyDirs_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnEmptyDirs_Click( object sender, EventArgs eventArgs )
 	{
 		this.RemoveEmptyDirs();
 	}
 
 	/// <summary>Represents the event handler if the `Lower Case` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnLowerCase_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnLowerCase_Click( object sender, EventArgs eventArgs )
 	{
 		this.LowerCaseExtensions();
 	}
 
 	/// <summary>Represents the event handler if the `ExIf` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnMetaData_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnMetaData_Click( object sender, EventArgs eventArgs )
 	{
 		this.MetaData();
 	}
 
 	/// <summary>Represents the event handler if the `Log` button has been clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void btnLog_Click( object sender, EventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void btnLog_Click( object sender, EventArgs eventArgs )
 	{
-		this.ToggleLog();
+		this.ToggleLogs();
 	}
 
 	/// <summary>Represents the event handler if the current item of the list box of MD5 sets will be formatted.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void lbxMd5Sets_Format( object sender, ListControlConvertEventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void lbxMd5Sets_Format( object sender, ListControlConvertEventArgs eventArgs )
 	{
-		Md5SetInterface md5Set = ( Md5SetInterface ) eventArguments.ListItem;
+		Md5SetInterface md5Set = ( Md5SetInterface ) eventArgs.ListItem;
 		string index = this
 			.md5Sets
 			.IndexOf( md5Set )
@@ -650,27 +825,27 @@ internal partial class Main:
 					.Length
 			);
 
-		eventArguments.Value = $"{index} :: {md5Set.Checksum}";
+		eventArgs.Value = $"{index} :: {md5Set.Checksum}";
 	}
 
 	/// <summary>Represents the event handler if the current item of the list box of files will be formatted.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void lbxFiles_Format( object sender, ListControlConvertEventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void lbxFiles_Format( object sender, ListControlConvertEventArgs eventArgs )
 	{
-		FileInterface file = ( FileInterface ) eventArguments.ListItem;
+		FileInterface file = ( FileInterface ) eventArgs.ListItem;
 		char prefix = false == file.FlagDeletion
 			? '+'
 			: '-';
-		eventArguments.Value = $"{prefix} {file.Path}";
+		eventArgs.Value = $"{prefix} {file.Path}";
 	}
 
 	/// <summary>Represents the event handler if the list box of files has been double clicked.</summary>
 	/// <param name="sender">The object which raised the event.</param>
-	/// <param name="eventArguments">The arguments of the event.</param>
-	private void lbxFiles_MouseDoubleClick( object sender, MouseEventArgs eventArguments )
+	/// <param name="eventArgs">The arguments of the event.</param>
+	private void lbxFiles_MouseDoubleClick( object sender, MouseEventArgs eventArgs )
 	{
-		int index = this.lbxFiles.IndexFromPoint( eventArguments.Location );
+		int index = this.lbxFiles.IndexFromPoint( eventArgs.Location );
 		if ( index != ListBox.NoMatches )
 		{
 			this.files[ index ].FlagDeletion = !this.files.Current.FlagDeletion;
