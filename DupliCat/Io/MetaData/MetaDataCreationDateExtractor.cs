@@ -18,9 +18,7 @@ internal class MetaDataCreationDateExtractor:
 	public virtual string Extract( string path )
 	{
 		MetaDataCreationDateExtractorInterface metaDataCreationDateExtractor = this.fileExtensionMetaDataCreationDateExtractorMappings[
-			Path
-				.GetExtension( path )
-				.ToLower()
+			Path.GetExtension( path )
 		];
 
 		return metaDataCreationDateExtractor?
