@@ -1,4 +1,6 @@
 using System.IO;
+using CodeKandis.DupliCat.Data;
+using File = System.IO.File;
 
 namespace CodeKandis.DupliCat.Io;
 
@@ -9,15 +11,15 @@ internal class FileExtensionLowerCaser:
 	FileExtensionLowerCaserInterface
 {
 	/// <inheritdoc/>
-	public virtual string LowerCase( string path )
+	public virtual void LowerCase( FileInterface file )
 	{
 		string lowerCasedExtension = Path
-			.GetExtension( path )
+			.GetExtension( file.Path )
 			.ToLower();
-		string newPath = Path.ChangeExtension( path, lowerCasedExtension );
+		string newPath = Path.ChangeExtension( file.Path, lowerCasedExtension );
 
-		File.Move( path, newPath );
+		File.Move( file.Path, newPath );
 
-		return newPath;
+		file.Path = newPath;
 	}
 }
