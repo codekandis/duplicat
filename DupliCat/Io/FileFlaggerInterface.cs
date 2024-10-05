@@ -2,7 +2,7 @@ using CodeKandis.DupliCat.Data;
 
 namespace CodeKandis.DupliCat.Io;
 
-/// <summary>Represents the interace of any file flagger.</summary>
+/// <summary>Represents the interface of any file flagger.</summary>
 internal interface FileFlaggerInterface
 {
 	/// <summary>Flags a file for deletion.</summary>

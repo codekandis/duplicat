@@ -559,7 +559,7 @@ internal partial class Main:
 		thread.Start();
 	}
 
-	/// <summary>Renames all file due to their meta data creation date.</summary>
+	/// <summary>Renames all files due to their meta data creation date.</summary>
 	private void MetaData()
 	{
 		Thread thread = new Thread(

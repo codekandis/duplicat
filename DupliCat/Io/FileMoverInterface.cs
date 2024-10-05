@@ -1,6 +1,6 @@
 namespace CodeKandis.DupliCat.Io;
 
-/// <summary>Represents the interace of any file mover.</summary>
+/// <summary>Represents the interface of any file mover.</summary>
 internal interface FileMoverInterface
 {
 	/// <summary>Moves a file from a specific path to a new specific path.</summary>
