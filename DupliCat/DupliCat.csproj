@@ -72,6 +72,8 @@
     <Compile Include="Io\DirectoryScanner.cs" />
     <Compile Include="Io\DirectoryScannerInterface.cs" />
     <Compile Include="Io\DirectoryRemoverInterface.cs" />
+    <Compile Include="Io\FileDeleter.cs" />
+    <Compile Include="Io\FileDeleterInterface.cs" />
     <Compile Include="Io\FileExtensionLowerCaser.cs" />
     <Compile Include="Io\FileExtensionLowerCaserInterface.cs" />
     <Compile Include="Io\FileMover.cs" />
