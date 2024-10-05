@@ -1,7 +1,7 @@
 namespace CodeKandis.DupliCat.Io;
 
 /// <summary>
-/// Represents the interace of any file mover.
+/// Represents the interface of any file mover.
 /// </summary>
 internal interface FileMoverInterface
 {
