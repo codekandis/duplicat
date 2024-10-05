@@ -3,13 +3,13 @@ using CodeKandis.DupliCat.Data;
 namespace CodeKandis.DupliCat.Serialization.Json;
 
 /// <summary>
-/// Represents a JSON project list deserializer.
+/// Represents a configuration JSON deserializer.
 /// </summary>
-internal class ProjectListJsonFileDeserializer:
+internal class ConfigurationJsonFileDeserializer:
 	JsonFileDeserializer<ProjectList>
 {
 	/// <inheritdoc/>
-	public ProjectListJsonFileDeserializer( string path )
+	public ConfigurationJsonFileDeserializer( string path )
 		: base( path )
 	{
 	}

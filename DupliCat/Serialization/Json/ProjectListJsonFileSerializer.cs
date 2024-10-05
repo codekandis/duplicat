@@ -3,7 +3,7 @@ using CodeKandis.DupliCat.Data;
 namespace CodeKandis.DupliCat.Serialization.Json;
 
 /// <summary>
-/// Represents a MD5 set list JSON project serializer.
+/// Represents a JSON project list serializer.
 /// </summary>
 internal class ProjectListJsonFileSerializer:
 	JsonFileSerializer<ProjectListInterface>

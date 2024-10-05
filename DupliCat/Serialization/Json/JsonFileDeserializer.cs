@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace CodeKandis.DupliCat.Serialization.Json;
 
 /// <summary>
-/// Represents a serialized JSON file reader.
+/// Represents a JSON file deserializer.
 /// </summary>
 /// <typeparam name="TData">The type of the deserialized data.</typeparam>
 internal class JsonFileDeserializer<TData>:
@@ -12,14 +12,14 @@ internal class JsonFileDeserializer<TData>:
 	where TData: class
 {
 	/// <summary>
-	/// Stores the path of the serialized JSON file.
+	/// Stores the path of the JSON file.
 	/// </summary>
 	private readonly string path;
 
 	/// <summary>
 	/// Constructor method.
 	/// </summary>
-	/// <param name="path">The path of the serialized JSON file.</param>
+	/// <param name="path">The path of the JSON file.</param>
 	public JsonFileDeserializer( string path )
 	{
 		this.path = path;

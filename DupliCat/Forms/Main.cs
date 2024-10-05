@@ -628,7 +628,7 @@ internal partial class Main:
 	}
 
 	/// <summary>
-	/// Renames all file due to their meta data creation date.
+	/// Renames all files due to their meta data creation date.
 	/// </summary>
 	private void MetaData()
 	{
