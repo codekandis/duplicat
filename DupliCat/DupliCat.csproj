@@ -76,6 +76,8 @@
     <Compile Include="Io\FileDeleterInterface.cs" />
     <Compile Include="Io\FileExtensionLowerCaser.cs" />
     <Compile Include="Io\FileExtensionLowerCaserInterface.cs" />
+    <Compile Include="Io\FileFlagger.cs" />
+    <Compile Include="Io\FileFlaggerInterface.cs" />
     <Compile Include="Io\FileMover.cs" />
     <Compile Include="Io\FileMoverInterface.cs" />
     <Compile Include="Io\Md5FileChecksumDeterminator.cs" />
