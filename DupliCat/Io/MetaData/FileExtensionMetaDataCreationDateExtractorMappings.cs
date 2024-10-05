@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,12 +24,10 @@ internal class FileExtensionMetaDataCreationDateExtractorMappings:
 			return this
 				.mappings
 				.Where(
-					mapping =>
-						fileExtension.ToLower() == mapping.Key
+					mapping => mapping.Key.Equals( fileExtension, StringComparison.OrdinalIgnoreCase )
 				)
 				.Select(
-					mapping =>
-						mapping.Value
+					mapping => mapping.Value
 				)
 				.DefaultIfEmpty( null )
 				.First();

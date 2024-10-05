@@ -16,12 +16,10 @@ internal class JpegMetaDataCreationDateExtractor:
 		Tag tag = JpegMetadataReader
 			.ReadMetadata( path )
 			.SelectMany(
-				directory =>
-					directory.Tags
+				directory => directory.Tags
 			)
 			.FirstOrDefault(
-				tag =>
-					0x9003 == tag.Type
+				tag => 0x9003 == tag.Type
 			);
 
 		return tag?.Description;
