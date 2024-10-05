@@ -1,4 +1,5 @@
-using System.IO;
+using CodeKandis.DupliCat.Data;
+using File = System.IO.File;
 
 namespace CodeKandis.DupliCat.Io;
 
@@ -9,8 +10,11 @@ internal class FileDeleter:
 	FileDeleterInterface
 {
 	/// <inheritdoc/>
-	public virtual void Delete( string path )
+	public virtual void Delete( FileInterface file )
 	{
-		File.Delete( path );
+		if ( File.Exists( file.Path ) )
+		{
+			File.Delete( file.Path );
+		}
 	}
 }

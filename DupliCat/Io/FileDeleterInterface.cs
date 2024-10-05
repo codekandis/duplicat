@@ -1,3 +1,5 @@
+using CodeKandis.DupliCat.Data;
+
 namespace CodeKandis.DupliCat.Io;
 
 /// <summary>
@@ -8,6 +10,6 @@ internal interface FileDeleterInterface
 	/// <summary>
 	/// Deletes a file.
 	/// </summary>
-	/// <param name="path">The path of the file.</param>
-	void Delete( string path );
+	/// <param name="file">The file to delete.</param>
+	void Delete( FileInterface file );
 }
