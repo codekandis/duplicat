@@ -11,5 +11,5 @@ internal interface JsonDeserializerInterface<out TData>
 	/// Deserializes the JSON data.
 	/// </summary>
 	/// <returns>The deserialized data.</returns>
-	TData Deserialize();
+	TData? Deserialize();
 }

@@ -74,6 +74,26 @@
 			label1.Text     = "Total:";
 
 			// 
+			// label2
+			// 
+			label2.AutoSize = true;
+			label2.Location = new System.Drawing.Point( 3, 3 );
+			label2.Name     = "label2";
+			label2.Size     = new System.Drawing.Size( 48, 13 );
+			label2.TabIndex = 19;
+			label2.Text     = "Progress";
+
+			// 
+			// label3
+			// 
+			label3.AutoSize = true;
+			label3.Location = new System.Drawing.Point( 3, 3 );
+			label3.Name     = "label3";
+			label3.Size     = new System.Drawing.Size( 34, 13 );
+			label3.TabIndex = 20;
+			label3.Text     = "Errors";
+
+			// 
 			// btnScan
 			// 
 			this.btnScan.Location =  new System.Drawing.Point( 1381, 11 );
@@ -333,26 +353,6 @@
 			this.tbxErrorLog.TabIndex   = 17;
 
 			// 
-			// label2
-			// 
-			label2.AutoSize = true;
-			label2.Location = new System.Drawing.Point( 3, 3 );
-			label2.Name     = "label2";
-			label2.Size     = new System.Drawing.Size( 48, 13 );
-			label2.TabIndex = 19;
-			label2.Text     = "Progress";
-
-			// 
-			// label3
-			// 
-			label3.AutoSize = true;
-			label3.Location = new System.Drawing.Point( 3, 3 );
-			label3.Name     = "label3";
-			label3.Size     = new System.Drawing.Size( 34, 13 );
-			label3.TabIndex = 20;
-			label3.Text     = "Errors";
-
-			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -381,11 +381,10 @@
 			this.Controls.Add( this.btnSave );
 			this.Controls.Add( this.lbxFiles );
 			this.Controls.Add( this.btnScan );
-			this.FormBorderStyle =  System.Windows.Forms.FormBorderStyle.FixedSingle;
-			this.Name            =  "Main";
-			this.StartPosition   =  System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text            =  "Main";
-			this.Load            += new System.EventHandler( this.this_Load );
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Name            = "Main";
+			this.StartPosition   = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Text            = "Main";
 			this.pnlLog.ResumeLayout( false );
 			this.pnlLog.PerformLayout();
 			this.pnlErrorLog.ResumeLayout( false );

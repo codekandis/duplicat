@@ -16,7 +16,7 @@ internal class Project:
 	/// Stores the notes.
 	/// </summary>
 	[ JsonProperty ]
-	private string notes;
+	private string notes = string.Empty;
 
 	/// <inheritdoc/>
 	public virtual string Notes

@@ -26,7 +26,7 @@ internal class JsonFileDeserializer<TData>:
 	}
 
 	/// <inheritdoc/>
-	public TData Deserialize()
+	public TData? Deserialize()
 	{
 		using Stream       stream       = new FileStream( this.path, FileMode.Open );
 		using StreamReader streamReader = new StreamReader( stream );
