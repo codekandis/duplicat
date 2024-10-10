@@ -11,9 +11,9 @@ internal class JpegMetaDataCreationDateExtractor:
 	MetaDataCreationDateExtractorInterface
 {
 	/// <inheritdoc/>
-	public virtual string Extract( string path )
+	public virtual string? Extract( string path )
 	{
-		Tag tag = JpegMetadataReader
+		Tag? tag = JpegMetadataReader
 			.ReadMetadata( path )
 			.SelectMany(
 				directory => directory.Tags

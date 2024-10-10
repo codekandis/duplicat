@@ -15,9 +15,9 @@ internal class MetaDataCreationDateExtractor:
 	/// </summary>
 	/// <param name="path">The path of the file to extract from.</param>
 	/// <returns>The creation date from the meta data.</returns>
-	public virtual string Extract( string path )
+	public virtual string? Extract( string path )
 	{
-		MetaDataCreationDateExtractorInterface metaDataCreationDateExtractor = this.fileExtensionMetaDataCreationDateExtractorMappings[
+		MetaDataCreationDateExtractorInterface? metaDataCreationDateExtractor = this.fileExtensionMetaDataCreationDateExtractorMappings[
 			Path.GetExtension( path )
 		];
 

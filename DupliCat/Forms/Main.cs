@@ -42,32 +42,32 @@ internal partial class Main:
 	/// <summary>
 	/// Stores the projects.
 	/// </summary>
-	private ProjectListInterface projectList = new ProjectList();
+	private ProjectListInterface? projectList;
 
 	/// <summary>
 	/// Stores the bindable data source of projects.
 	/// </summary>
-	private BindableDataSource<ProjectInterface> projects;
+	private readonly BindableDataSource<ProjectInterface> projects = new BindableDataSource<ProjectInterface>();
 
 	/// <summary>
 	/// Stores the MD5 sets.
 	/// </summary>
-	private Md5SetListInterface md5SetList = new Md5SetList();
+	private Md5SetListInterface? md5SetList;
 
 	/// <summary>
 	/// Stores the bindable data source of MD5 sets.
 	/// </summary>
-	private BindableDataSource<Md5SetInterface> md5Sets;
+	private readonly BindableDataSource<Md5SetInterface> md5Sets = new BindableDataSource<Md5SetInterface>();
 
 	/// <summary>
 	/// Stores the files.
 	/// </summary>
-	private FileListInterface fileList = new FileList();
+	private FileListInterface? fileList;
 
 	/// <summary>
 	/// Stores the bindable data source of files.
 	/// </summary>
-	private BindableDataSource<FileInterface> files;
+	private readonly BindableDataSource<FileInterface> files = new BindableDataSource<FileInterface>();
 
 	/// <summary>
 	/// Constructor method.
@@ -86,17 +86,14 @@ internal partial class Main:
 		Application.ApplicationExit                += this.Application_ApplicationExit;
 		AppDomain.CurrentDomain.UnhandledException += this.AppGui_UnhandledException;
 
-		this.projects                =  new BindableDataSource<ProjectInterface>();
 		this.projects.CurrentChanged += this.projects_CurrentChanged;
 		this.projects.RefreshWith( this.projectList );
 		this.cbxProjects.DataSource = this.projects;
 
-		this.md5Sets                =  new BindableDataSource<Md5SetInterface>();
 		this.md5Sets.CurrentChanged += this.md5Sets_CurrentChanged;
 		this.md5Sets.RefreshWith( this.md5SetList );
 		this.lbxMd5Sets.DataSource = this.md5Sets;
 
-		this.files = new BindableDataSource<FileInterface>();
 		this.files.RefreshWith( this.fileList );
 		this.lbxFiles.DataSource = this.files;
 
@@ -255,7 +252,7 @@ internal partial class Main:
 	private void SaveProjects()
 	{
 		new ProjectListJsonFileSerializer( this.projectsFilePath )
-			.Serialize( this.projectList );
+			.Serialize( this.projectList! );
 	}
 
 	/// <summary>
@@ -438,7 +435,7 @@ internal partial class Main:
 	/// </summary>
 	private void Purge()
 	{
-		for ( int n = this.md5SetList.Count - 1; n >= 0; n-- )
+		for ( int n = this.md5SetList!.Count - 1; n >= 0; n-- )
 		{
 			if ( 2 >= this.md5SetList[ n ].Files.Count )
 			{
@@ -460,7 +457,7 @@ internal partial class Main:
 			{
 				FileListInterface filesToProcess = this.PrepareProcessing(
 					() => this
-						.md5SetList
+						.md5SetList!
 						.SelectMany(
 							md5Set => md5Set.Files
 						)
@@ -506,7 +503,7 @@ internal partial class Main:
 			{
 				FileListInterface filesToProcess = this.PrepareProcessing(
 					() => this
-						.md5SetList
+						.md5SetList!
 						.SelectMany(
 							md5Set => md5Set
 								.Files
@@ -538,7 +535,7 @@ internal partial class Main:
 						this.Log( "... failed" );
 					}
 
-					foreach ( Md5SetInterface md5Set in this.md5SetList )
+					foreach ( Md5SetInterface md5Set in this.md5SetList! )
 					{
 						md5Set.Files.Remove( file );
 					}
@@ -591,7 +588,7 @@ internal partial class Main:
 			{
 				FileListInterface filesToProcess = this.PrepareProcessing(
 					() => this
-						.md5SetList
+						.md5SetList!
 						.SelectMany(
 							md5Set => md5Set.Files
 						)
@@ -637,7 +634,7 @@ internal partial class Main:
 			{
 				FileListInterface filesToProcess = this.PrepareProcessing(
 					() => this
-						.md5SetList
+						.md5SetList!
 						.SelectMany(
 							md5Set => md5Set.Files
 						)
@@ -650,7 +647,7 @@ internal partial class Main:
 					this.Log( "---" );
 					this.Log( file.Path );
 
-					string creationDate = null;
+					string? creationDate = null;
 					try
 					{
 						creationDate = metaDataCreationDateExtractor.Extract( file.Path );
@@ -674,7 +671,7 @@ internal partial class Main:
 						{
 							this.Log( $"... {creationDate}" );
 
-							string fileDirectory = Path.GetDirectoryName( file.Path );
+							string fileDirectory = Path.GetDirectoryName( file.Path )!;
 							string fileExtension = Path.GetExtension( file.Path );
 							string newFileName = DateTime
 								.ParseExact( creationDate, "yyyy:MM:dd HH:mm:ss", null )

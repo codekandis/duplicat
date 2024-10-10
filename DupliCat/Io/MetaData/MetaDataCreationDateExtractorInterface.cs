@@ -9,6 +9,6 @@ internal interface MetaDataCreationDateExtractorInterface
 	/// Extracts the creation date from the meta data.
 	/// </summary>
 	/// <param name="path">The path of the file to extract from.</param>
-	/// <returns>The creation date from the meta data.</returns>
-	string Extract( string path );
+	/// <returns>The creation date from the meta data, `null` if not found.</returns>
+	string? Extract( string path );
 }

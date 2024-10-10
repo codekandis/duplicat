@@ -9,7 +9,8 @@ internal interface FileExtensionMetaDataCreationDateExtractorMappingsInterface
 	/// Gets a file extension meta data creation date extractor by a specific file extension.
 	/// </summary>
 	/// <param name="fileExtension">The file extension of the meta data creation date extractor.</param>
-	MetaDataCreationDateExtractorInterface this[ string fileExtension ]
+	/// <return></return>
+	MetaDataCreationDateExtractorInterface? this[ string fileExtension ]
 	{
 		get;
 	}

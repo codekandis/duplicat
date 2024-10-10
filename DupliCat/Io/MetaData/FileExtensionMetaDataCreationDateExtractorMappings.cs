@@ -17,7 +17,7 @@ internal class FileExtensionMetaDataCreationDateExtractorMappings:
 	};
 
 	/// <inheritdoc/>
-	public virtual MetaDataCreationDateExtractorInterface this[ string fileExtension ]
+	public virtual MetaDataCreationDateExtractorInterface? this[ string fileExtension ]
 	{
 		get
 		{
