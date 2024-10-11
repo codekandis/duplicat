@@ -83,6 +83,8 @@
     <Compile Include="Io\FileMoverInterface.cs" />
     <Compile Include="Io\Md5FileChecksumDeterminator.cs" />
     <Compile Include="Io\Md5FileChecksumDeterminatorInterface.cs" />
+    <Compile Include="Io\MetaData\CreationDateParser.cs" />
+    <Compile Include="Io\MetaData\CreationDateParserInterface.cs" />
     <Compile Include="Io\MetaData\FileExtensionMetaDataCreationDateExtractorMappings.cs" />
     <Compile Include="Io\MetaData\FileExtensionMetaDataCreationDateExtractorMappingsInterface.cs" />
     <Compile Include="Io\MetaData\JpegMetaDataCreationDateExtractor.cs" />
