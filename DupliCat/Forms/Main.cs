@@ -642,50 +642,66 @@ internal partial class Main:
 				);
 
 				MetaDataCreationDateExtractorInterface metaDataCreationDateExtractor = new MetaDataCreationDateExtractor();
+				CreationDateParserInterface            creationDateParser            = new CreationDateParser();
 				foreach ( FileInterface file in filesToProcess )
 				{
 					this.Log( "---" );
 					this.Log( file.Path );
 
-					string? creationDate = null;
+					string? creationDate;
 					try
 					{
 						creationDate = metaDataCreationDateExtractor.Extract( file.Path );
 					}
 					catch ( Exception exception )
 					{
+						this.IncreaseProgress();
+
 						this.LogError( "---" );
 						this.LogError( file.Path );
 						this.LogError( exception.Message );
 
 						this.Log( "... failed" );
+
+						continue;
 					}
+
+					if ( null == creationDate )
+					{
+						this.IncreaseProgress();
+
+						this.Log( "... creationDate: <null>" );
+
+						continue;
+					}
+
+					this.Log( $"... creationDate: {creationDate}" );
 
 					try
 					{
-						if ( null == creationDate )
+						string  fileDirectory = Path.GetDirectoryName( file.Path )!;
+						string  fileExtension = Path.GetExtension( file.Path );
+						string? newFileName   = creationDateParser.Parse( creationDate );
+
+						if ( null == newFileName )
 						{
-							this.Log( "... <null>" );
+							this.IncreaseProgress();
+
+							this.Log( "... newFileName: <null>" );
+
+							continue;
 						}
-						else
-						{
-							this.Log( $"... {creationDate}" );
 
-							string fileDirectory = Path.GetDirectoryName( file.Path )!;
-							string fileExtension = Path.GetExtension( file.Path );
-							string newFileName = DateTime
-								.ParseExact( creationDate, "yyyy:MM:dd HH:mm:ss", null )
-								.ToString( "yyyy-MM-dd HH.mm.ss" );
+						this.Log( $"... newFileName: {newFileName}" );
 
-							string targetPath = $@"{fileDirectory}\{newFileName}{fileExtension}";
+						string targetPath = $@"{fileDirectory}\{newFileName}{fileExtension}";
 
-							new FileMover()
-								.Move( file.Path, targetPath );
+						new FileMover()
+							.Move( file.Path, targetPath );
 
-							this.Log( "... succeeded" );
+						this.Log( "... succeeded" );
 
-							file.Path = targetPath;
-						}
+						file.Path = targetPath;
 					}
 					catch ( Exception exception )
 					{
