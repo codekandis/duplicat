@@ -91,6 +91,8 @@
     <Compile Include="Io\MetaData\MetaDataCreationDateExtractor.cs" />
     <Compile Include="Io\MetaData\MetaDataCreationDateExtractorInterface.cs" />
     <Compile Include="Io\RecursivelyEmptyDirectoryRemover.cs" />
+    <Compile Include="Io\RegisteredFilePaths.cs" />
+    <Compile Include="Io\RegisteredFilePathsInterface.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Json\Converters\JsonFileListConverter.cs" />
