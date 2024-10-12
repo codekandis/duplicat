@@ -81,6 +81,8 @@
     <Compile Include="Io\FileFlaggerInterface.cs" />
     <Compile Include="Io\FileMover.cs" />
     <Compile Include="Io\FileMoverInterface.cs" />
+    <Compile Include="Io\FilePathCountExtensioner.cs" />
+    <Compile Include="Io\FilePathCountExtensionerInterface.cs" />
     <Compile Include="Io\Md5FileChecksumDeterminator.cs" />
     <Compile Include="Io\Md5FileChecksumDeterminatorInterface.cs" />
     <Compile Include="Io\MetaData\CreationDateParser.cs" />

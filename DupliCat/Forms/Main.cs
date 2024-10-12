@@ -645,6 +645,7 @@ internal partial class Main:
 
 				MetaDataCreationDateExtractorInterface metaDataCreationDateExtractor = new MetaDataCreationDateExtractor();
 				CreationDateParserInterface            creationDateParser            = new CreationDateParser();
+				FilePathCountExtensionerInterface      filePathCountExtensioner      = new FilePathCountExtensioner( 3 );
 				foreach ( FileInterface file in filesToProcess )
 				{
 					this.Log( "---" );
@@ -685,7 +686,8 @@ internal partial class Main:
 						string  fileExtension = Path.GetExtension( file.Path );
 						string? newFileName   = creationDateParser.Parse( creationDate );
 
-						if ( null == newFileName )
+						if ( null == newFileName
+						)
 						{
 							this.IncreaseProgress();
 
@@ -696,7 +698,9 @@ internal partial class Main:
 
 						this.Log( $"... newFileName: {newFileName}" );
 
-						string targetPath = $@"{fileDirectory}\{newFileName}{fileExtension}";
+						string countablePath  = $@"{fileDirectory}\{newFileName}{fileExtension}";
+						string countExtension = filePathCountExtensioner.DetermineCountExtension( countablePath );
+						string targetPath     = $@"{fileDirectory}\{newFileName}-{countExtension}{fileExtension}";
 
 						new FileMover()
 							.Move( file.Path, targetPath );
