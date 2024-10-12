@@ -1,12 +1,12 @@
-using CodeKandis.DupliCat.Data;
+using CodeKandis.DupliCat.Configurations;
 
 namespace CodeKandis.DupliCat.Serialization.Json;
 
 /// <summary>
-/// Represents a configuration JSON deserializer.
+/// Represents a JSON configuration deserializer.
 /// </summary>
 internal class ConfigurationJsonFileDeserializer:
-	JsonFileDeserializer<ProjectList>
+	JsonFileDeserializer<Configuration>
 {
 	/// <inheritdoc/>
 	public ConfigurationJsonFileDeserializer( string path )
