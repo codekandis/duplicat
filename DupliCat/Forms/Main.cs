@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using CodeKandis.DupliCat.Configurations;
 using CodeKandis.DupliCat.Data;
 using CodeKandis.DupliCat.Io;
 using CodeKandis.DupliCat.Io.MetaData;
@@ -30,9 +31,24 @@ internal partial class Main:
 	private const string PROJECTS_FILE_NAME = "projects.json";
 
 	/// <summary>
+	/// Represents the name of the configuration file.
+	/// </summary>
+	private const string CONFIGURATION_FILE_NAME = "config.json";
+
+	/// <summary>
 	/// Represents the path of the error log file.
 	/// </summary>
 	private readonly string errorLogPath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, Main.ERROR_LOG_NAME );
+
+	/// <summary>
+	/// Represents the path of the configuration file.
+	/// </summary>
+	private readonly string configurationFilePath = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, Main.CONFIGURATION_FILE_NAME );
+
+	/// <summary>
+	/// Stores the configuration.
+	/// </summary>
+	private ConfigurationInterface? configuration;
 
 	/// <summary>
 	/// Represents the path of the projects file.
@@ -75,7 +91,7 @@ internal partial class Main:
 	public Main()
 	{
 		this.InitializeComponent();
-		
+
 		this.Initialize();
 	}
 
@@ -99,6 +115,7 @@ internal partial class Main:
 		this.files.RefreshWith( this.fileList );
 		this.lbxFiles.DataSource = this.files;
 
+		this.LoadConfiguration();
 		this.LoadProjects();
 	}
 
@@ -226,6 +243,15 @@ internal partial class Main:
 		using StreamWriter streamWriter = new StreamWriter( file );
 
 		streamWriter.WriteLine( message );
+	}
+
+	/// <summary>
+	/// Loads the configuration.
+	/// </summary>
+	private void LoadConfiguration()
+	{
+		this.configuration = new ConfigurationJsonFileDeserializer( this.configurationFilePath )
+			.Deserialize();
 	}
 
 	/// <summary>
@@ -644,7 +670,7 @@ internal partial class Main:
 				);
 
 				MetaDataCreationDateExtractorInterface metaDataCreationDateExtractor = new MetaDataCreationDateExtractor();
-				CreationDateParserInterface            creationDateParser            = new CreationDateParser();
+				CreationDateParserInterface            creationDateParser            = new CreationDateParser( this.configuration!.Root.Modules.MetaData.CreationDate );
 				FilePathCountExtensionerInterface      filePathCountExtensioner      = new FilePathCountExtensioner( 3 );
 				foreach ( FileInterface file in filesToProcess )
 				{
